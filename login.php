@@ -3,6 +3,7 @@ session_start();
 require_once("inc/config.inc.php");
 require_once("inc/functions.inc.php");
 
+
 $error_msg = "";
 if(isset($_POST['email']) && isset($_POST['passwort'])) {
 	$email = $_POST['email'];
@@ -41,30 +42,25 @@ if(isset($_POST['email']))
 
 include("templates/header.inc.php");
 ?>
- <div class="container small-container-330 form-signin">
-  <form action="login.php" method="post">
-	<h2 class="form-signin-heading">Login</h2>
-	
-<?php 
-if(isset($error_msg) && !empty($error_msg)) {
-	echo $error_msg;
-}
-?>
-	<label for="inputEmail" class="sr-only">E-Mail</label>
-	<input type="email" name="email" id="inputEmail" class="form-control" placeholder="E-Mail" value="<?php echo $email_value; ?>" required autofocus>
-	<label for="inputPassword" class="sr-only">Passwort</label>
-	<input type="password" name="passwort" id="inputPassword" class="form-control" placeholder="Passwort" required>
-	<div class="checkbox">
-	  <label>
-		<input type="checkbox" value="remember-me" name="angemeldet_bleiben" value="1" checked> Angemeldet bleiben
-	  </label>
-	</div>
-	<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-	<br>
-	<a href="passwortvergessen.php">Passwort vergessen</a>
-  </form>
+<div class="jumbotron">
+      <div class="container">
+        <h1>soteam <small style="font-size : 0.4em">by Thorsten Freimann</small></h1>
+        <p>Herzlich Willkommen bei soteam, der super simplen Aufwandserfassung für <span style="font-weight : bold;">S</span>elbst<span style="font-weight : bold;">O</span>rganisierte <span style="font-weight : bold;">Teams</span>.
+		</p>
+		<p><span style="font-weight : bold;">soteam</span> bietet ein super simple Art, Aufwand zu erfassen und einen schnellen Überblick darüber zu bekommen, wer wann was gemacht hat.</p>
+		<p>So könnt ihr super einfach eure Aufgaben super gerecht auf die einzelnen Teammitglieder verteilen!
+		</p>
+		
+		
+        
+       
+        
+        </p>
+       
+      </div>
+    </div>
 
-</div> <!-- /container -->
+ 
  
 
 <?php 
