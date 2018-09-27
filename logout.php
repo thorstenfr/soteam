@@ -14,7 +14,7 @@ include("templates/header.inc.php");
 ?>
 
 <div class="container main-container">
-Der Logout war erfolgreich. <a href="login.php">Zurück zum Login</a>.
+Der Logout war erfolgreich. <a href="index.php">Zurück zum Login</a>.
 </div>
 <?php 
 include("templates/footer.inc.php")

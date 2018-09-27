@@ -3,6 +3,8 @@ session_start();
 require_once("inc/config.inc.php");
 require_once("inc/functions.inc.php");
 
+include("templates/header.inc.php");
+
 
 $error_msg = "";
 if(isset($_POST['email']) && isset($_POST['passwort'])) {
@@ -28,7 +30,7 @@ if(isset($_POST['email']) && isset($_POST['passwort'])) {
 			setcookie("securitytoken",$securitytoken,time()+(3600*24*365)); //Valid for 1 year
 		}
 
-		header("location: index.php");
+		header("location: soteam.php");
 		exit;
 	} else {
 		$error_msg =  "E-Mail oder Passwort war ungültig<br><br>";
@@ -40,7 +42,7 @@ $email_value = "";
 if(isset($_POST['email']))
 	$email_value = htmlentities($_POST['email']); 
 
-include("templates/header.inc.php");
+
 ?>
 <div class="jumbotron">
       <div class="container">

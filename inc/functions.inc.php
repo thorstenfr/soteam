@@ -41,8 +41,8 @@ function check_user() {
 	
 	
 	if(!isset($_SESSION['userid'])) {
-		header("location: login.php");
-		die('Bitte zuerst <a href="login.php">einloggen</a>');
+		// header("location: login.php");
+		die('Bitte zuerst <a href="index.php">einloggen</a>');
 	}
 	
 
