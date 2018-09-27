@@ -12,7 +12,7 @@ include("templates/header.inc.php")
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
-        <h1>soteam <small style="font-size : 0.4em;">by Thorsten Freimann</small></h1>
+        <h1>soteam <small style="font-size : 0.4em;"><b>s</b>elbst<b>o</b>rganisierte <b>Teams</b></small></h1>
         <p>Herzlich Willkommen bei <b>soteam</b> der super simplen Aufwandserfassung für kleine, selbstorganisierte Teams.</p>
 		
         
