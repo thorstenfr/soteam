@@ -37,9 +37,9 @@ xmlhttp.send();
 function showBuchungen(str) {
 	
 	var myCheckBox = document.getElementById("cb_detail");  
+	var myRadioButton = document.getElementById("alle");
 	
-	
-	var myQueryId = document.querySelector("#mySelect").value;
+	// var myQueryId = document.querySelector("#mySelect").value;
 
 	
     if (str == "") {
@@ -58,7 +58,7 @@ function showBuchungen(str) {
                 document.getElementById("txtHint").innerHTML = this.responseText;
             }
         };
-        xmlhttp.open("GET","getbuchungen.php?q="+myQueryId+"&c="+myCheckBox.checked+"",true);
+        xmlhttp.open("GET","getbuchungen.php?q="+myRadioButton.checked+"&c="+myCheckBox.checked+"",true);
         xmlhttp.send();
     }
 }
@@ -66,7 +66,7 @@ function showBuchungen(str) {
 
 <div class="container main-container">
 
-<h1>Herzlich Willkommen!</h1>
+<h1>Interner Bereich</h1>
 
 Hallo <?php echo htmlentities($user['vorname']); ?>,<br>
 Herzlich Willkommen im internen Bereich!<br><br>
@@ -95,9 +95,15 @@ while($row = $statement->fetch()) {
 }
 ?>
 </table>
+
+<?php	
+	if ($user['rollen_id']>1) {
+ ?>
 <h2>Buchungen</h2>
-<p>Wählen Sie den Teamer aus, für den die Buchungen angezeigt werden sollen.</p>
+
 <form>
+<!--
+<p>Wählen Sie den Teamer aus, für den die Buchungen angezeigt werden sollen.</p>
 <select id="mySelect" name="users" onchange="showBuchungen(this.value)">
 <option value="">Teamer auswählen</option>
 <option value="*">ALLE</option>
@@ -110,11 +116,25 @@ while($row = $statement->fetch()) {
 }
 ?> 
   </select>
-  <input type="checkbox" name="details" value="detail" id="cb_detail" onchange="showBuchungen(this.value)"> Zusammenfassung anzeigen<br>
+   <br>
+  -->
+ 
+
+ 
+	Anzeigen der Buchungen: 
+  <label for="alle">alle</label><input  onchange="showBuchungen(1)"  id="alle" type="radio" name="wer" value="alle" checked>  oder nur 
+  
+  <label for="mir">meine</label>
+  <input onchange="showBuchungen(1)"  id="mir" type="radio" name="wer" value="ich">
+
+  <label for="cb_detail">. Details anzeigen: </label><input type="checkbox" name="details" value="detail" id="cb_detail" onchange="showBuchungen(1)"> 
 </form>
 <br>
 <div id="txtHint"><b>Buchungen werden hier angezeigt...</b></div>
 </div>
+<?php
+	}
+?>
 
 
 
