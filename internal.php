@@ -8,10 +8,40 @@ require_once("inc/functions.inc.php");
 $user = check_user();
 
 include("templates/header.inc.php");
+
 ?>
+
+<!--
+<h2>Get data as JSON from a PHP file on the server.</h2>
+
+<p id="demo"></p>
+-->
+
+<script>
+
+var xmlhttp = new XMLHttpRequest();
+
+xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        myObj = JSON.parse(this.responseText);
+        document.getElementById("demo").innerHTML = myObj.name;
+    }
+};
+xmlhttp.open("GET", "demo_file.php", true);
+xmlhttp.send();
+
+</script>
+
 
 <script>
 function showBuchungen(str) {
+	
+	var myCheckBox = document.getElementById("cb_detail");  
+	
+	
+	var myQueryId = document.querySelector("#mySelect").value;
+
+	
     if (str == "") {
         document.getElementById("txtHint").innerHTML = "";
         return;
@@ -28,7 +58,7 @@ function showBuchungen(str) {
                 document.getElementById("txtHint").innerHTML = this.responseText;
             }
         };
-        xmlhttp.open("GET","getbuchungen.php?q="+str,true);
+        xmlhttp.open("GET","getbuchungen.php?q="+myQueryId+"&c="+myCheckBox.checked+"",true);
         xmlhttp.send();
     }
 }
@@ -40,6 +70,7 @@ function showBuchungen(str) {
 
 Hallo <?php echo htmlentities($user['vorname']); ?>,<br>
 Herzlich Willkommen im internen Bereich!<br><br>
+
 
 <div class="panel panel-default">
  
@@ -67,8 +98,9 @@ while($row = $statement->fetch()) {
 <h2>Buchungen</h2>
 <p>Wählen Sie den Teamer aus, für den die Buchungen angezeigt werden sollen.</p>
 <form>
-<select name="users" onchange="showBuchungen(this.value)">
-<option value="*"> - ALLE - </option>
+<select id="mySelect" name="users" onchange="showBuchungen(this.value)">
+<option value="">Teamer auswählen</option>
+<option value="*">ALLE</option>
 <?php
 $statement = $pdo->prepare("SELECT * FROM users ORDER BY id");
 $result = $statement->execute();
@@ -78,10 +110,13 @@ while($row = $statement->fetch()) {
 }
 ?> 
   </select>
+  <input type="checkbox" name="details" value="detail" id="cb_detail" onchange="showBuchungen(this.value)"> Zusammenfassung anzeigen<br>
 </form>
 <br>
 <div id="txtHint"><b>Buchungen werden hier angezeigt...</b></div>
 </div>
+
+
 
 
 </div>
