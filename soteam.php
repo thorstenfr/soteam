@@ -24,7 +24,8 @@ if (!$conn) {
 $sql = "select tmp_user_id, tmp_user_nick, tmp_heute, tmp_woche, tmp_monat, tmp_jahr\n"
 
     . "FROM tmp_buchung\n"
-	. "WHERE tmp_user_nick<>'deakt'";
+	. "WHERE tmp_user_nick<>'deakt'\n"
+	. "AND tmp_team_id=".$user['sae_team_id']."";
 	
 	
 $result = mysqli_query($conn,$sql);

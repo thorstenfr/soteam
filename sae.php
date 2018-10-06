@@ -49,8 +49,8 @@ $stmt->bind_param("iiisi", $wert, $user_id, $auf_id, $kommentar, $user['sae_team
 $stmt->execute();
 $stmt->close();
 
-$sql = "INSERT INTO tmp_buchung (tmp_user_id, tmp_user_nick,tmp_jahr)\n"
-    . "select users.id, users.nick, SUM(sae_buchung.buc_wert) as summe \n"
+$sql = "INSERT INTO tmp_buchung (tmp_user_id, tmp_user_nick,tmp_jahr,tmp_team_id)\n"
+    . "select users.id, users.nick, SUM(sae_buchung.buc_wert) as summe,".intval($user['sae_team_id'])." \n"
     . "from users,sae_buchung\n"
     . "where users.id=sae_buchung.users_id AND YEAR(buc_created_at)=YEAR(Now())\n"
 	. "AND sae_buchung.sae_team_id=".intval($user['sae_team_id'])."\n"
