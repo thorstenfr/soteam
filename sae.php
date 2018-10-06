@@ -1,3 +1,13 @@
+<?php
+session_start();
+require_once("inc/config.inc.php");
+require_once("inc/functions.inc.php");
+
+//Überprüfe, dass der User eingeloggt ist
+//Der Aufruf von check_user() muss in alle internen Seiten eingebaut sein
+$user = check_user();
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,10 +41,10 @@ if (!mysqli_query($conn, $sql)) {
 }
 
 
-$stmt = $conn->prepare("INSERT INTO sae_buchung (buc_wert, users_id, sae_aufgabe_auf_id, buc_kommentar)
-VALUES (?, ?, ?, ?)");
+$stmt = $conn->prepare("INSERT INTO sae_buchung (buc_wert, users_id, sae_aufgabe_auf_id, buc_kommentar, sae_team_id)
+VALUES (?, ?, ?, ?, ?)");
 
-$stmt->bind_param("iiis", $wert, $user_id, $auf_id, $kommentar);
+$stmt->bind_param("iiisi", $wert, $user_id, $auf_id, $kommentar, $user['sae_team_id']);
 
 $stmt->execute();
 $stmt->close();
@@ -43,6 +53,7 @@ $sql = "INSERT INTO tmp_buchung (tmp_user_id, tmp_user_nick,tmp_jahr)\n"
     . "select users.id, users.nick, SUM(sae_buchung.buc_wert) as summe \n"
     . "from users,sae_buchung\n"
     . "where users.id=sae_buchung.users_id AND YEAR(buc_created_at)=YEAR(Now())\n"
+	. "AND sae_buchung.sae_team_id=".intval($user['sae_team_id'])."\n"
 	." GROUP BY users.id";
 	
 

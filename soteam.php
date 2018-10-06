@@ -14,6 +14,8 @@ include("templates/header.inc.php");
 
 <p>Herzlich Willkommen <b><?php echo htmlentities($user['vorname']); ?></b>!</p>
 
+
+
 <?php
 $conn = mysqli_connect($db_host,$db_user,$db_password,$db_name);
 if (!$conn) {
@@ -72,7 +74,7 @@ $result = mysqli_query($conn,$sql);
 	<div id="auf_liste">
 		<?php 
 
-			$statement = $pdo->prepare("SELECT  sae_aufgabe.auf_beschreibung, auf_id FROM sae.sae_aufgabe, users, users_has_sae_aufgabe WHERE id=users_id AND auf_id=sae_aufgabe_auf_id AND id=".$user['id']);
+			$statement = $pdo->prepare("SELECT  sae_aufgabe.auf_beschreibung, auf_id FROM sae.sae_aufgabe, users, users_has_sae_aufgabe WHERE id=users_id AND auf_id=sae_aufgabe_auf_id AND id=".$user['id']." AND sae_aufgabe.sae_team_id=".$user['sae_team_id']."");
 			$result = $statement->execute();
 			$count = 1;
 
@@ -94,6 +96,8 @@ $(document).ready(function(){
 </script>
 
 
+<script src="https://hammerjs.github.io/dist/hammer.js"></script>
+
 <script>
 function changeColor(id)
 {
@@ -101,6 +105,7 @@ function changeColor(id)
   document.getElementById(id).style.backgroundColor = "#ff0000"; // backcolor
 }
 </script>
+
 
 
 <?php 

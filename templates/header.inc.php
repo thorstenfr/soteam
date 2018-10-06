@@ -14,11 +14,14 @@
     <!-- Custom styles for this template -->
     <link href="css/style.css" rel="stylesheet"> 
 	
+	
+	
     
     <script>
 function addBuchung(str) {
 	var msg = document.querySelector("#kommentar").value;
 	/* document.getElementById('kommentar').value = ""; */
+		
     if (str == "") {
         document.getElementById("txtHint").innerHTML = "";
         return;

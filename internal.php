@@ -68,31 +68,99 @@ function showBuchungen(str) {
 
 <h1>Interner Bereich</h1>
 
-Hallo <?php echo htmlentities($user['vorname']); ?>,<br>
-Herzlich Willkommen im internen Bereich!<br><br>
+
+
 
 
 <div class="panel panel-default">
  
 <table class="table">
-<tr>
-	<th>#</th>
-	<th>Vorname</th>
-	<th>Nachname</th>
-	<th>E-Mail</th>
-</tr>
-<?php 
-$statement = $pdo->prepare("SELECT * FROM users ORDER BY id");
+
+<?php
+$statement = $pdo->prepare("SELECT sum(sae_buchung.buc_wert) as sum FROM `sae_buchung` where sae_buchung.users_id=".$user['id']."");
 $result = $statement->execute();
-$count = 1;
 while($row = $statement->fetch()) {
-	echo "<tr>";
-	echo "<td>".$count++."</td>";
-	echo "<td>".$row['vorname']."</td>";
-	echo "<td>".$row['nachname']."</td>";
-	echo '<td><a href="mailto:'.$row['email'].'">'.$row['email'].'</a></td>';
-	echo "</tr>";
+	$summe = $row['sum'];
 }
+
+$statement = $pdo->prepare("SELECT sae_buchung.buc_created_at as las FROM `sae_buchung`  where sae_buchung.users_id=".$user['id']."  ORDER by sae_buchung.buc_created_at DESC LIMIT 1");
+$result = $statement->execute();
+while($row = $statement->fetch()) {
+	$last = $row['las'];
+}
+
+$statement = $pdo->prepare("SELECT sae_buchung.buc_created_at as fir FROM `sae_buchung`  where sae_buchung.users_id=".$user['id']."  ORDER by sae_buchung.buc_created_at ASC LIMIT 1");
+$result = $statement->execute();
+while($row = $statement->fetch()) {
+	$first = $row['fir'];
+}
+
+$sql = "SELECT sae_team.bezeichnung as bez \n"
+
+    . "FROM `sae_team` , users\n"
+
+    . "where users.sae_team_id=sae_team.id\n"
+
+    . "and users.id=".$user['id']."";
+	
+$statement = $pdo->prepare($sql);
+$result = $statement->execute();
+while($row = $statement->fetch()) {
+	$bezeichnung = $row['bez'];
+}
+
+$sql = "SELECT sae_rollen.bezeichnung as rol\n"
+
+    . "FROM `sae_rollen`, users\n"
+
+    . "where users.rollen_id=sae_rollen.id\n"
+
+    . "and users.id=".$user['id']."";
+	
+$statement = $pdo->prepare($sql);
+$result = $statement->execute();
+while($row = $statement->fetch()) {
+	$rolle = $row['rol'];
+}
+
+	
+
+?> 
+
+<?php
+	echo "<tr>";
+		echo "<td>Team</td>";
+		echo "<td>".$bezeichnung."</td>";
+	echo "</tr>";
+	echo "<tr>";
+		echo "<td>Rolle</td>";
+		echo "<td>".$rolle."</td>";
+	echo "</tr>";
+	echo "<tr>";
+		echo "<td>Vorname</td>";
+		echo "<td>".$user['vorname']."</td>";
+	echo "</tr>";
+	echo "<tr>";
+		echo "<td>Nachname</td>";
+		echo "<td>".$user['nachname']."</td>";
+	echo "</tr>";
+	echo "<tr>";
+		echo "<td>Nick</td>";
+		echo "<td>".$user['nick']."</td>";
+	echo "</tr>";
+	echo "<tr>";
+		echo "<td>Buchungen</td>";
+		echo "<td>".$summe."</td>";
+	echo "</tr>";
+	echo "<tr>";
+		echo "<td>Erste Buchung</td>";
+		echo "<td>".$first."</td>";
+	echo "</tr>";
+	echo "<tr>";
+		echo "<td>Letzte Buchung</td>";
+		echo "<td>".$last."</td>";
+	echo "</tr>";
+
 ?>
 </table>
 
