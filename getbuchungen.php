@@ -30,7 +30,7 @@ $alle=$_GET['q'];
 $details=$_GET['c'];
 
 /* Gesamt-Buchung berechnen */
-	$sql = "SELECT sum(sae_buchung.buc_wert) as summe FROM `sae_buchung` WHERE 1";
+	$sql = "SELECT sum(sae_buchung.buc_wert) as summe FROM `sae_buchung` WHERE  sae_buchung.sae_team_id=".$user['sae_team_id']."";
 	if($alle=="false") {
 			$sql = $sql." AND sae_buchung.users_id=".$user['id'];
 	}
@@ -51,7 +51,9 @@ if ($details=="false") {
 
 		. "from sae_buchung,sae_aufgabe\n"
 
-		. "where sae_aufgabe.auf_id=sae_buchung.sae_aufgabe_auf_id\n";
+		. "where sae_aufgabe.auf_id=sae_buchung.sae_aufgabe_auf_id\n"
+		
+		. "AND sae_buchung.sae_team_id=".$user['sae_team_id']."";
 		
 		if($alle=="false") {
 			$sql = $sql." AND sae_buchung.users_id=".$user['id'];
@@ -66,7 +68,8 @@ else {
 	
 	$sql = "SELECT  users.nick as wer, sae_buchung.buc_created_at as wann, sae_buchung.buc_wert as wert, sae_aufgabe.auf_beschreibung as was, sae_buchung.buc_kommentar as kommentar, sae_buchung.users_id\n"
     . "FROM `sae_buchung`, users, sae_aufgabe\n"
-    . "where sae_buchung.users_id=users.id\n";
+    . "where sae_buchung.users_id=users.id\n"
+	. "AND sae_buchung.sae_team_id=".$user['sae_team_id']."";
 	
 	if($alle=="false") {
 			$sql = $sql." AND sae_buchung.users_id=".$user['id'];
@@ -74,21 +77,12 @@ else {
 	
     $sql=$sql." AND sae_buchung.sae_aufgabe_auf_id=sae_aufgabe.auf_id\n"
 	. "ORDER BY wann";
-	
-	
-	
-	
-}
 
 	
-	
+}
 	$sql = $pdo->prepare($sql);
-	
-		
 	$result = $sql->execute();
-	
-	
-	
+
 	while($row = $sql->fetch()) {
 		$prozent=((intval($row['wert'])/intval($mySumme))*100);
 		$prozent=number_format($prozent, 2, ',', '.');
