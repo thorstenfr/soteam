@@ -93,3 +93,8 @@ function error($error_msg) {
 	include("templates/footer.inc.php");
 	exit();
 }
+/**
+ * Refreshed die tmp Tabelle
+ */
+ 
+ 

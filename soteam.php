@@ -17,6 +17,10 @@ include("templates/header.inc.php");
 
 
 <?php
+/* ToDo: hier die tmp tabelle füllen
+passiert altuell in sae. eventuell als funktion realisieren. dsnn wäre auch ein refresh möhlich
+*/
+
 $conn = mysqli_connect($db_host,$db_user,$db_password,$db_name);
 if (!$conn) {
     die('Could not connect: ' . mysqli_error($con));
