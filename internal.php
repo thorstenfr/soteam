@@ -186,7 +186,7 @@ while($row = $statement->fetch()) {
   </select>
    <br>
   -->
- 
+ </form>
 
  
 	Anzeigen der Buchungen: 
@@ -196,7 +196,7 @@ while($row = $statement->fetch()) {
   <input onchange="showBuchungen(1)"  id="mir" type="radio" name="wer" value="ich">
 
   <label for="cb_detail">. Details anzeigen: </label><input type="checkbox" name="details" value="detail" id="cb_detail" onchange="showBuchungen(1)"> 
-</form>
+
 <br>
 <div id="txtHint"><b>Buchungen werden hier angezeigt...</b></div>
 </div>

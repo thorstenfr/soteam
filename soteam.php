@@ -113,6 +113,7 @@ function changeColor(id)
 }
 </script>
 
+<script src="https://hammerjs.github.io/dist/hammer.js"></script>
 
 
 <?php 
