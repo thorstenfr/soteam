@@ -43,6 +43,7 @@ $result = mysqli_query($conn,$sql);
 	
 
 		<?php
+			$tag = date("d");
 			
 			echo "<table class=\"table table-bordered\"> 
 				<tr>
@@ -58,7 +59,7 @@ $result = mysqli_query($conn,$sql);
 				echo "<td>" . $row['tmp_user_nick'] . "</td>";    
 				echo "<td id=\"tmp_heute\">" . $row['tmp_heute']/4 . "</td>";
 				echo "<td>" . $row['tmp_woche']/4 . "</td>";
-				echo "<td>" . $row['tmp_monat']/4 . "</td>";
+				echo "<td>" . $row['tmp_monat']/4 . " (" . round(($row['tmp_monat']/4)/$tag,2) . " Std/Tag) </td>";
 				echo "<td>" . $row['tmp_jahr']/4 . "</td>";
 				echo "</tr>";
 			}
@@ -103,7 +104,7 @@ $(document).ready(function(){
 </script>
 
 
-<script src="https://hammerjs.github.io/dist/hammer.js"></script>
+
 
 <script>
 function changeColor(id)
@@ -113,7 +114,7 @@ function changeColor(id)
 }
 </script>
 
-<script src="https://hammerjs.github.io/dist/hammer.js"></script>
+
 
 
 <?php 

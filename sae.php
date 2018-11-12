@@ -30,6 +30,9 @@ echo $wert;
 echo $kommentar;
 echo "<br>";
 */
+
+$tag = date("d");
+
 $conn = mysqli_connect($db_host,$db_user,$db_password,$db_name);
 if (!$conn) {
     die('Could not connect: ' . mysqli_error($con));
@@ -73,7 +76,7 @@ $result = mysqli_query($conn,$sql);
 				echo "<td>" . $row['tmp_user_nick'] . "</td>";    
 				echo "<td id=\"tmp_heute\">" . $row['tmp_heute']/4 . "</td>";
 				echo "<td>" . $row['tmp_woche']/4 . "</td>";
-				echo "<td>" . $row['tmp_monat']/4 . "</td>";
+				echo "<td>" . $row['tmp_monat']/4 . " (" . round(($row['tmp_monat']/4)/$tag,2) . " Std/Tag) </td>";
 				echo "<td>" . $row['tmp_jahr']/4 . "</td>";
 				echo "</tr>";
 			}
