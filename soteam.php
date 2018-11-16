@@ -7,6 +7,12 @@ require_once("inc/functions.inc.php");
 //Der Aufruf von check_user() muss in alle internen Seiten eingebaut sein
 $user = check_user();
 
+// Admins umleiten
+if($user['rollen_id']==3) {
+			header("location: admin.php");
+			
+} 
+
 include("templates/header.inc.php");
 ?>
 

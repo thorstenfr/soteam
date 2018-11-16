@@ -29,8 +29,15 @@ if(isset($_POST['email']) && isset($_POST['passwort'])) {
 			setcookie("identifier",$identifier,time()+(3600*24*365)); //Valid for 1 year
 			setcookie("securitytoken",$securitytoken,time()+(3600*24*365)); //Valid for 1 year
 		}
-
-		header("location: soteam.php");
+		if($user['rollen_id']==3) {
+			header("location: admin.php");
+			
+		} 
+		else {
+			header("location: soteam.php");
+			
+		}
+		
 		exit;
 	} else {
 		$error_msg =  "E-Mail oder Passwort war ungültig<br><br>";
