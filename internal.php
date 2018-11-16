@@ -154,11 +154,24 @@ while($row = $statement->fetch()) {
 	echo "</tr>";
 	echo "<tr>";
 		echo "<td>Erste Buchung</td>";
-		echo "<td>".$first."</td>";
+		if (isset($first)) {
+ 		   // Die Variable ist gesetzt, also wird etwas ausgegeben.
+		   echo "<td>".$first."</td>";
+		}
+		else {
+			echo "<td>Keine Buchung vorhanden</td>";
+		}
+		
 	echo "</tr>";
 	echo "<tr>";
 		echo "<td>Letzte Buchung</td>";
-		echo "<td>".$last."</td>";
+		if (isset($last)) {
+ 		   // Die Variable ist gesetzt, also wird etwas ausgegeben.
+		   echo "<td>".$last."</td>";
+		}
+		else {
+			echo "<td>Keine Buchung vorhanden</td>";
+		}
 	echo "</tr>";
 
 ?>
