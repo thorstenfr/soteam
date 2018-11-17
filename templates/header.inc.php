@@ -14,6 +14,7 @@
     <!-- Custom styles for this template -->
     <link href="css/style.css" rel="stylesheet"> 
 	
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 	
 	
     

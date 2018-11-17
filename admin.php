@@ -36,7 +36,6 @@ $result = mysqli_query($conn,$sql);
 
 <div>
 	<div id="txtHint">
-		
 		<?php
 			$tag = date("d");
 			
@@ -47,18 +46,9 @@ $result = mysqli_query($conn,$sql);
 					echo "<option value=" . $row['auf_id'] . ">" . $row['auf_beschreibung'] . "</option>";
 				
 			}
-
 			echo "</select>";
-
-				
 		?>
-		
-		
-
-		
-		
-		
-		</div> 
+	</div> 
 </div>
 
 
