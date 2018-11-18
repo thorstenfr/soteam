@@ -32,6 +32,32 @@ function mySelectSaeAufgabeFunction() {
 
 
 <script>
+function myCheckFunction() {
+  // Get the checkbox
+  var cbAuswertung = document.getElementById("myCheckAuswertung");
+  var cbAdmin = document.getElementById("myCheckAdmin");
+  
+  // Die beiden DIVs
+  var divAuswertung = document.getElementById("divAuswertung");
+  var divAdmin = document.getElementById("divAdmin");
+  
+  // If the checkbox is checked, display the output text
+  if (cbAuswertung.checked == true){
+    divAuswertung.style.display = "block";
+  } else {
+    divAuswertung.style.display = "none";
+  }
+  // If the checkbox is checked, display the output text
+  if (cbAdmin.checked == true){
+    divAdmin.style.display = "block";
+  } else {
+    divAdmin.style.display = "none";
+  }
+}
+</script>
+
+
+<script>
 function updateAufgabe() {
 			var aufid = document.getElementById("akt_auf_id").innerHTML;
 			var aufbeschreibung = document.getElementById("neu_auf_name").value;
@@ -211,11 +237,17 @@ function showBuchungen(str) {
 			if ($user['rollen_id']>1) {
 		 ?>
 		 
-		 <div ng-app="">
-		 Auswertung: <input type="checkbox" ng-model="myAuswertungen">
-		 Administration: <input type="checkbox" ng-model="myAdministration">
-		
-			<div ng-show="myAuswertungen">
+		 <div>
+		 <div class="well well-sm">
+			<h4>Anzeigen</h4>
+			<div class="checkbox">
+			  <label><input type="checkbox" id="myCheckAuswertung" onclick="myCheckFunction()" value="">Auswertung</label>
+			</div>
+			<div class="checkbox">
+			  <label><input type="checkbox" value=""  id="myCheckAdmin" onclick="myCheckFunction()">Administration</label>
+			</div>
+		</div>
+			<div id="divAuswertung" style="display : none;">
 				<h2>Auswertung</h2>
 				<h3>Buchungen</h3>
 				Anzeigen der Buchungen: 
@@ -228,8 +260,8 @@ function showBuchungen(str) {
 				
 					<br>
 					<div id="txtHint"><b>Buchungen werden hier angezeigt...</b></div>
-					</div>
-			<div ng-show="myAdministration">
+			</div>
+			<div id="divAdmin" style="display : none;">
 				<h2>Administration</h2>
 				<?php
 					/* ToDo: hier die tmp tabelle füllen
@@ -261,7 +293,7 @@ function showBuchungen(str) {
 							}
 							echo "</select>";
 						?>
-						<p id="p_akt_auf_id">Aktueller ID: <span id="akt_auf_id"></span></p>
+						<p id="p_akt_auf_id" style="display : none;">Aktueller ID: <span id="akt_auf_id"></span></p>
 						<p id="p_akt_auf_name">Aktueller Beschreibung: <span id="akt_auf_name"></span></p>
 						<label for="neu_auf_name">Neue Beschreibung:</label>
 						<input type="text" name="neu_auf_name" id="neu_auf_name" placeholder="Neue Beschreibung der Tätigkeit">
