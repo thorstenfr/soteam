@@ -63,8 +63,8 @@ function updateAufgabe() {
 			var aufbeschreibung = document.getElementById("neu_auf_name").value;
 			var str = aufid+":"+aufbeschreibung;
 			
-		if (str == "") {
-        document.getElementById("txtHint").innerHTML = "";
+		if (aufbeschreibung == "") {
+        document.getElementById("neu_auf_name").innerHTML = "";
         return;
     } else { 
         if (window.XMLHttpRequest) {
@@ -83,7 +83,11 @@ function updateAufgabe() {
         xmlhttp.open("GET","updateAufgabe.php?q="+str,true);
         xmlhttp.send();
     }
-		
+	
+
+			// Button - Beschriftung ändern 			
+			document.getElementById("btnUpdateAufgabe").innerHTML = 'Gespeichert!';
+			document.getElementById("neu_auf_name").value = '';
 		
 		
    
@@ -297,7 +301,7 @@ function showBuchungen(str) {
 						<p id="p_akt_auf_name">Aktueller Beschreibung: <span id="akt_auf_name"></span></p>
 						<label for="neu_auf_name">Neue Beschreibung:</label>
 						<input type="text" name="neu_auf_name" id="neu_auf_name" placeholder="Neue Beschreibung der Tätigkeit">
-						<button onclick="updateAufgabe()">Speichern</button>
+						<button id="btnUpdateAufgabe" onclick="updateAufgabe()">Speichern</button>
 					</div> 
 				</div>
 
