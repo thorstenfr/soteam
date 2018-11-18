@@ -22,10 +22,12 @@ include("templates/header.inc.php");
 <script>
 function mySelectSaeAufgabeFunction() {
     var x = document.getElementById("mySelectSaeAufgabe").value;
-	 var res = x.split(";");
-	 var auf_id = res[1];
-    document.getElementById("akt_auf_id").innerHTML = res[0];
+	var res = x.split(";");
+	
+	// Felder setzen
+	document.getElementById("akt_auf_id").innerHTML = res[0];
 	document.getElementById("akt_auf_name").innerHTML = res[1];
+	document.getElementById("sae_tae_fk").innerHTML = res[2];
 	
 }
 </script>
@@ -61,7 +63,10 @@ function myCheckFunction() {
 function updateAufgabe() {
 			var aufid = document.getElementById("akt_auf_id").innerHTML;
 			var aufbeschreibung = document.getElementById("neu_auf_name").value;
-			var str = aufid+":"+aufbeschreibung;
+			var taet = document.getElementById("sae_tae_fk").innerHTML;		
+				
+			var str = aufid+":"+aufbeschreibung+":"+taet;
+			
 			
 		if (aufbeschreibung == "") {
         document.getElementById("neu_auf_name").innerHTML = "";
@@ -289,15 +294,17 @@ function showBuchungen(str) {
 							$tag = date("d");
 							
 							echo "<select id=\"mySelectSaeAufgabe\" onchange=\"mySelectSaeAufgabeFunction()\">";
+							echo "<option>-Tätigkeit auswählen-</option>";
 							
 							while($row = mysqli_fetch_array($result)) {
 								
-									echo "<option value='" . $row['auf_id'] . ";" . $row['auf_beschreibung'] . "" . "''>" . $row['auf_beschreibung'] . "</option>";
+									echo "<option value='" . $row['auf_id'] . ";" . $row['auf_beschreibung'] . ";" . $row['sae_tae_fk'] . "" . "''>" . $row['auf_beschreibung'] . "</option>";
 								
 							}
 							echo "</select>";
 						?>
-						<p id="p_akt_auf_id" style="display : none;">Aktueller ID: <span id="akt_auf_id"></span></p>
+						<p id="p_akt_auf_id" style="display : block;">Aktuelle ID: <span id="akt_auf_id"></span></p>
+						<p id="p_akt_auf_id" style="display : block;">sae_tae_fk: <span id="sae_tae_fk"></span></p>
 						<p id="p_akt_auf_name">Aktueller Beschreibung: <span id="akt_auf_name"></span></p>
 						<label for="neu_auf_name">Neue Beschreibung:</label>
 						<input type="text" name="neu_auf_name" id="neu_auf_name" placeholder="Neue Beschreibung der Tätigkeit">

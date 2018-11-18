@@ -20,12 +20,8 @@ $user = check_user();
 <?php
 	require_once("inc/config.inc.php");
 		
-	list($aufid, $beschreibung) = explode(":", $_GET['q']);
+	list($aufid, $beschreibung, $taetid) = explode(":", $_GET['q']);
 	
-	/*
-	$beschreibung = "Lulu";
-	$aufid = 9;
-	*/
 	
 	$tag = date("d");
 	
@@ -34,9 +30,18 @@ $user = check_user();
 	    die('Could not connect: ' . mysqli_error($con));
 	}
 	
-	$sql = "UPDATE `sae_aufgabe` SET `auf_beschreibung` = '" . $beschreibung . "', `auf_updated_at` = NULL, `auf_beendet_am` = NULL WHERE `sae_aufgabe`.`auf_id` = " . $aufid;
+	$sql = "UPDATE `sae_aufgabe` SET `auf_beschreibung` = '" . $beschreibung . "' WHERE `sae_aufgabe`.`auf_id` = " . $aufid . " AND sae_team_id=" . $user['sae_team_id'];
 	
 
+	if ($conn->query($sql) === TRUE) {
+	    echo "Record updated successfully";
+	} else {
+	    echo "Error updating record: " . $conn->error;
+	}
+	
+	
+	$sql = "UPDATE `sae_taetigkeit` SET `tae_bezeichnung` = '" . $beschreibung . "' WHERE `sae_taetigkeit`.`tae_id` = " . $taetid . " AND sae_team_id=" . $user['sae_team_id'];
+	
 	if ($conn->query($sql) === TRUE) {
 	    echo "Record updated successfully";
 	} else {
