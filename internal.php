@@ -28,6 +28,9 @@ function mySelectSaeAufgabeFunction() {
 	document.getElementById("akt_auf_id").innerHTML = res[0];
 	document.getElementById("akt_auf_name").innerHTML = res[1];
 	document.getElementById("sae_tae_fk").innerHTML = res[2];
+	document.getElementById("auf_daueraufgabe").innerHTML = res[3];
+	
+	
 	
 }
 </script>
@@ -63,9 +66,11 @@ function myCheckFunction() {
 function updateAufgabe() {
 			var aufid = document.getElementById("akt_auf_id").innerHTML;
 			var aufbeschreibung = document.getElementById("neu_auf_name").value;
-			var taet = document.getElementById("sae_tae_fk").innerHTML;		
+			var taet = document.getElementById("sae_tae_fk").innerHTML;	
+			var dauer = document.getElementById("auf_daueraufgabe").innerHTML;	
+			
 				
-			var str = aufid+":"+aufbeschreibung+":"+taet;
+			var str = aufid+":"+aufbeschreibung+":"+taet+":"+dauer;
 			
 			
 		if (aufbeschreibung == "") {
@@ -90,14 +95,14 @@ function updateAufgabe() {
     }
 	
 
-			// Button - Beschriftung ändern 			
-			document.getElementById("btnUpdateAufgabe").innerHTML = 'Gespeichert!';
-			document.getElementById("neu_auf_name").value = '';
+	// Seitre neu laden, damit das select passt.
+	location.reload();
 		
 		
    
 }
 </script>
+
 
 
 <script>
@@ -272,6 +277,8 @@ function showBuchungen(str) {
 			</div>
 			<div id="divAdmin" style="display : none;">
 				<h2>Administration</h2>
+				
+				
 				<?php
 					/* ToDo: hier die tmp tabelle füllen
 					passiert altuell in sae. eventuell als funktion realisieren. dsnn wäre auch ein refresh möhlich
@@ -289,7 +296,7 @@ function showBuchungen(str) {
 					$result = mysqli_query($conn,$sql);
 				?>
 				<div>
-					<div id="txtHint">
+					<div id="divAufgaben2">
 						<?php
 							$tag = date("d");
 							
@@ -298,14 +305,15 @@ function showBuchungen(str) {
 							
 							while($row = mysqli_fetch_array($result)) {
 								
-									echo "<option value='" . $row['auf_id'] . ";" . $row['auf_beschreibung'] . ";" . $row['sae_tae_fk'] . "" . "''>" . $row['auf_beschreibung'] . "</option>";
+									echo "<option value='" . $row['auf_id'] . ";" . $row['auf_beschreibung'] . ";" . $row['sae_tae_fk'] . ";" . $row['auf_daueraufgabe'] . "" . "''>" . $row['auf_beschreibung'] . "</option>";
 								
 							}
 							echo "</select>";
 						?>
-						<p id="p_akt_auf_id" style="display : block;">Aktuelle ID: <span id="akt_auf_id"></span></p>
-						<p id="p_akt_auf_id" style="display : block;">sae_tae_fk: <span id="sae_tae_fk"></span></p>
-						<p id="p_akt_auf_name">Aktueller Beschreibung: <span id="akt_auf_name"></span></p>
+						<p id="p_akt_auf_id" style="display : none;">Aktuelle ID: <span id="akt_auf_id"></span></p>
+						<p id="p_akt_auf_id" style="display : none;">sae_tae_fk: <span id="sae_tae_fk"></span></p>
+						<p id="p_akt_auf_id" style="display : none;">auf_daueraufgabe: <span id="auf_daueraufgabe"></span></p>
+						<p style="display : none;" id="p_akt_auf_name">Aktueller Beschreibung: <span id="akt_auf_name"></span></p>
 						<label for="neu_auf_name">Neue Beschreibung:</label>
 						<input type="text" name="neu_auf_name" id="neu_auf_name" placeholder="Neue Beschreibung der Tätigkeit">
 						<button id="btnUpdateAufgabe" onclick="updateAufgabe()">Speichern</button>

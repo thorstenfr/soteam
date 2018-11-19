@@ -20,7 +20,7 @@ $user = check_user();
 <?php
 	require_once("inc/config.inc.php");
 		
-	list($aufid, $beschreibung, $taetid) = explode(":", $_GET['q']);
+	list($aufid, $beschreibung, $taetid, $auf_daueraufgabe) = explode(":", $_GET['q']);
 	
 	
 	$tag = date("d");
@@ -39,14 +39,19 @@ $user = check_user();
 	    echo "Error updating record: " . $conn->error;
 	}
 	
+	if ($auf_daueraufgabe == 1) 
+	{
+		// Bei Dueraufgaben auch die entsprechende Tätigkeit neu schreiben
+		$sql = "UPDATE `sae_taetigkeit` SET `tae_bezeichnung` = '" . $beschreibung . "' WHERE `sae_taetigkeit`.`tae_id` = " . $taetid . " AND sae_team_id=" . $user['sae_team_id'];
 	
-	$sql = "UPDATE `sae_taetigkeit` SET `tae_bezeichnung` = '" . $beschreibung . "' WHERE `sae_taetigkeit`.`tae_id` = " . $taetid . " AND sae_team_id=" . $user['sae_team_id'];
-	
-	if ($conn->query($sql) === TRUE) {
-	    echo "Record updated successfully";
-	} else {
-	    echo "Error updating record: " . $conn->error;
+		if ($conn->query($sql) === TRUE) {
+			echo "Record updated successfully";
+		} else {
+			echo "Error updating record: " . $conn->error;
+		}
 	}
+	
+	
 	
 	$conn->close();
 
