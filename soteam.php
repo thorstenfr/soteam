@@ -103,24 +103,6 @@ $result = mysqli_query($conn,$sql);
 	<input type="text" name="kommentar" id="kommentar" placeholder="Kommentar zur Buchung">
 </div>
 
-<script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();   
-});
-</script>
-
-
-
-
-<script>
-function changeColor(id)
-{
-  document.getElementById(id).style.color = "#ff0000"; // forecolor
-  document.getElementById(id).style.backgroundColor = "#ff0000"; // backcolor
-}
-</script>
-
-
 
 
 <?php 
