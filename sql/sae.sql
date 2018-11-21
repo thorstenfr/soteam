@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Erstellungszeit: 21. Nov 2018 um 21:36
+-- Erstellungszeit: 21. Nov 2018 um 22:15
 -- Server-Version: 10.1.30-MariaDB
 -- PHP-Version: 7.2.1
 
@@ -83,7 +83,8 @@ CREATE TABLE `sae_taetigkeit` (
   `tae_bezeichnung` varchar(45) NOT NULL,
   `tae_langbezeichnung` varchar(200) DEFAULT NULL,
   `tea_created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `tae_updated_at` timestamp NULL DEFAULT NULL
+  `tae_updated_at` timestamp NULL DEFAULT NULL,
+  `sae_team_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -169,7 +170,8 @@ CREATE TABLE `users_has_sae_aufgabe` (
 --
 ALTER TABLE `sae_aufgabe`
   ADD PRIMARY KEY (`auf_id`),
-  ADD KEY `gehoert_zu` (`sae_tae_fk`);
+  ADD KEY `gehoert_zu` (`sae_tae_fk`),
+  ADD KEY `aufg_team` (`sae_team_id`);
 
 --
 -- Indizes für die Tabelle `sae_buchung`
@@ -177,7 +179,8 @@ ALTER TABLE `sae_aufgabe`
 ALTER TABLE `sae_buchung`
   ADD PRIMARY KEY (`buc_id`),
   ADD KEY `user_add` (`users_id`),
-  ADD KEY `fk_sae_buchung_sae_aufgabe1_idx` (`sae_aufgabe_auf_id`);
+  ADD KEY `fk_sae_buchung_sae_aufgabe1_idx` (`sae_aufgabe_auf_id`),
+  ADD KEY `sae_team_id` (`sae_team_id`);
 
 --
 -- Indizes für die Tabelle `sae_rollen`
@@ -189,7 +192,8 @@ ALTER TABLE `sae_rollen`
 -- Indizes für die Tabelle `sae_taetigkeit`
 --
 ALTER TABLE `sae_taetigkeit`
-  ADD PRIMARY KEY (`tae_id`);
+  ADD PRIMARY KEY (`tae_id`),
+  ADD KEY `sae_team_id` (`sae_team_id`);
 
 --
 -- Indizes für die Tabelle `sae_team`
@@ -207,14 +211,16 @@ ALTER TABLE `securitytokens`
 -- Indizes für die Tabelle `tmp_buchung`
 --
 ALTER TABLE `tmp_buchung`
-  ADD PRIMARY KEY (`tmp_user_id`);
+  ADD PRIMARY KEY (`tmp_user_id`),
+  ADD KEY `tmp_team_id` (`tmp_team_id`);
 
 --
 -- Indizes für die Tabelle `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `sae_team_id` (`sae_team_id`);
 
 --
 -- Indizes für die Tabelle `users_has_sae_aufgabe`
@@ -278,6 +284,7 @@ ALTER TABLE `users`
 -- Constraints der Tabelle `sae_aufgabe`
 --
 ALTER TABLE `sae_aufgabe`
+  ADD CONSTRAINT `aufg_team` FOREIGN KEY (`sae_team_id`) REFERENCES `sae_team` (`id`),
   ADD CONSTRAINT `gehoert_zu` FOREIGN KEY (`sae_tae_fk`) REFERENCES `sae_taetigkeit` (`tae_id`);
 
 --
@@ -285,5 +292,24 @@ ALTER TABLE `sae_aufgabe`
 --
 ALTER TABLE `sae_buchung`
   ADD CONSTRAINT `fk_sae_buchung_sae_aufgabe1` FOREIGN KEY (`sae_aufgabe_auf_id`) REFERENCES `sae_aufgabe` (`auf_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `sae_buchung_ibfk_1` FOREIGN KEY (`sae_team_id`) REFERENCES `sae_team` (`id`),
   ADD CONSTRAINT `user_add` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints der Tabelle `sae_taetigkeit`
+--
+ALTER TABLE `sae_taetigkeit`
+  ADD CONSTRAINT `sae_taetigkeit_ibfk_1` FOREIGN KEY (`sae_team_id`) REFERENCES `sae_team` (`id`);
+
+--
+-- Constraints der Tabelle `tmp_buchung`
+--
+ALTER TABLE `tmp_buchung`
+  ADD CONSTRAINT `tmp_buchung_ibfk_1` FOREIGN KEY (`tmp_team_id`) REFERENCES `sae_team` (`id`);
+
+--
+-- Constraints der Tabelle `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`sae_team_id`) REFERENCES `sae_team` (`id`);
 COMMIT;
