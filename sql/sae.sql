@@ -1,22 +1,16 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.7.7
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Erstellungszeit: 04. Okt 2018 um 18:11
--- Server-Version: 10.1.28-MariaDB
--- PHP-Version: 7.1.10
+-- Host: localhost
+-- Erstellungszeit: 21. Nov 2018 um 21:36
+-- Server-Version: 10.1.30-MariaDB
+-- PHP-Version: 7.2.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Datenbank: `sae`
@@ -36,7 +30,8 @@ CREATE TABLE `sae_aufgabe` (
   `auf_created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `auf_updated_at` timestamp NULL DEFAULT NULL,
   `auf_beendet_am` timestamp NULL DEFAULT NULL,
-  `sae_tae_fk` int(11) NOT NULL
+  `sae_tae_fk` int(11) NOT NULL,
+  `sae_team_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -51,7 +46,8 @@ CREATE TABLE `sae_buchung` (
   `buc_wert` int(11) NOT NULL,
   `buc_kommentar` varchar(255) DEFAULT NULL,
   `users_id` int(11) UNSIGNED NOT NULL,
-  `sae_aufgabe_auf_id` int(11) NOT NULL
+  `sae_aufgabe_auf_id` int(11) NOT NULL,
+  `sae_team_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -66,6 +62,15 @@ CREATE TABLE `sae_rollen` (
   `kurz` varchar(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Daten für Tabelle `sae_rollen`
+--
+
+INSERT INTO `sae_rollen` (`id`, `bezeichnung`, `kurz`) VALUES
+(1, 'Benutzer', 'ben'),
+(2, 'Experte', 'exp'),
+(3, 'Admin', 'adm');
+
 -- --------------------------------------------------------
 
 --
@@ -79,6 +84,18 @@ CREATE TABLE `sae_taetigkeit` (
   `tae_langbezeichnung` varchar(200) DEFAULT NULL,
   `tea_created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `tae_updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `sae_team`
+--
+
+CREATE TABLE `sae_team` (
+  `id` int(11) NOT NULL,
+  `bezeichnung` varchar(255) NOT NULL,
+  `kurzbezeichnung` varchar(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -104,10 +121,11 @@ CREATE TABLE `securitytokens` (
 CREATE TABLE `tmp_buchung` (
   `tmp_user_id` int(11) NOT NULL,
   `tmp_user_nick` varchar(5) NOT NULL,
-  `tmp_heute` int(11) NOT NULL,
-  `tmp_woche` int(11) NOT NULL,
-  `tmp_monat` int(11) NOT NULL,
-  `tmp_jahr` int(11) NOT NULL
+  `tmp_heute` int(11) DEFAULT NULL,
+  `tmp_woche` int(11) DEFAULT NULL,
+  `tmp_monat` int(11) DEFAULT NULL,
+  `tmp_jahr` int(11) NOT NULL,
+  `tmp_team_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -127,7 +145,8 @@ CREATE TABLE `users` (
   `passwortcode` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `passwortcode_time` timestamp NULL DEFAULT NULL,
   `nick` varchar(5) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `rollen_id` int(11) NOT NULL
+  `rollen_id` int(11) NOT NULL,
+  `sae_team_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -173,6 +192,12 @@ ALTER TABLE `sae_taetigkeit`
   ADD PRIMARY KEY (`tae_id`);
 
 --
+-- Indizes für die Tabelle `sae_team`
+--
+ALTER TABLE `sae_team`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indizes für die Tabelle `securitytokens`
 --
 ALTER TABLE `securitytokens`
@@ -207,13 +232,13 @@ ALTER TABLE `users_has_sae_aufgabe`
 -- AUTO_INCREMENT für Tabelle `sae_aufgabe`
 --
 ALTER TABLE `sae_aufgabe`
-  MODIFY `auf_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `auf_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT für Tabelle `sae_buchung`
 --
 ALTER TABLE `sae_buchung`
-  MODIFY `buc_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=290;
+  MODIFY `buc_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT für Tabelle `sae_rollen`
@@ -228,16 +253,22 @@ ALTER TABLE `sae_taetigkeit`
   MODIFY `tae_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT für Tabelle `sae_team`
+--
+ALTER TABLE `sae_team`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT für Tabelle `securitytokens`
 --
 ALTER TABLE `securitytokens`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT für Tabelle `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints der exportierten Tabellen
@@ -255,15 +286,4 @@ ALTER TABLE `sae_aufgabe`
 ALTER TABLE `sae_buchung`
   ADD CONSTRAINT `fk_sae_buchung_sae_aufgabe1` FOREIGN KEY (`sae_aufgabe_auf_id`) REFERENCES `sae_aufgabe` (`auf_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `user_add` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`);
-
---
--- Constraints der Tabelle `users_has_sae_aufgabe`
---
-ALTER TABLE `users_has_sae_aufgabe`
-  ADD CONSTRAINT `fk_users_has_sae_aufgabe_sae_aufgabe1` FOREIGN KEY (`sae_aufgabe_auf_id`) REFERENCES `sae_aufgabe` (`auf_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_users_has_sae_aufgabe_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
