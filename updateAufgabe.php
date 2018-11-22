@@ -18,11 +18,11 @@ $user = check_user();
 <body>
 
 <?php
-	require_once("inc/config.inc.php");
-		
+
+
 	list($aufid, $beschreibung, $taetid, $auf_daueraufgabe) = explode(":", $_GET['q']);
 	
-	
+		
 	$tag = date("d");
 	
 	$conn = mysqli_connect($db_host,$db_user,$db_password,$db_name);
@@ -32,7 +32,8 @@ $user = check_user();
 	
 	$sql = "UPDATE `sae_aufgabe` SET `auf_beschreibung` = '" . $beschreibung . "' WHERE `sae_aufgabe`.`auf_id` = " . $aufid . " AND sae_team_id=" . $user['sae_team_id'];
 	
-
+	
+	
 	if ($conn->query($sql) === TRUE) {
 	    echo "Record updated successfully";
 	} else {
@@ -43,7 +44,7 @@ $user = check_user();
 	{
 		// Bei Dueraufgaben auch die entsprechende Tätigkeit neu schreiben
 		$sql = "UPDATE `sae_taetigkeit` SET `tae_bezeichnung` = '" . $beschreibung . "' WHERE `sae_taetigkeit`.`tae_id` = " . $taetid . " AND sae_team_id=" . $user['sae_team_id'];
-	
+		
 		if ($conn->query($sql) === TRUE) {
 			echo "Record updated successfully";
 		} else {
