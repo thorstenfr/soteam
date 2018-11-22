@@ -19,7 +19,6 @@ $user = check_user();
 
 <?php
 	
-	error_log("updateAufgabe gestartet!", 0);
 
 	list($aufid, $beschreibung, $taetid, $auf_daueraufgabe) = explode(":", $_GET['q']);
 	
@@ -32,13 +31,11 @@ $user = check_user();
 	}
 	
 	$sql = "UPDATE `sae_aufgabe` SET `auf_beschreibung` = '" . $beschreibung . "' WHERE `sae_aufgabe`.`auf_id` = " . $aufid . " AND sae_team_id=" . $user['sae_team_id'];
-		error_log("SQL: (" . $sql . ")", 0);
 	
 	
 	
 	if ($conn->query($sql) === TRUE) {
 	    echo "Record updated successfully";
-		error_log("Record updated successfully", 0);
 		
 		
 	} else {
@@ -49,11 +46,9 @@ $user = check_user();
 	{
 		// Bei Dueraufgaben auch die entsprechende Tätigkeit neu schreiben
 		$sql = "UPDATE `sae_taetigkeit` SET `tae_bezeichnung` = '" . $beschreibung . "' WHERE `sae_taetigkeit`.`tae_id` = " . $taetid . " AND sae_team_id=" . $user['sae_team_id'];
-		error_log("SQL2: (" . $sql . ")", 0);
 		
 		if ($conn->query($sql) === TRUE) {
 			echo "Record updated successfully";
-			error_log("2: Record updated successfully", 0);
 		} else {
 			echo "Error updating record: " . $conn->error;
 		}
@@ -68,3 +63,4 @@ $user = check_user();
 ?>
 </body>
 </html>
+

@@ -86,7 +86,9 @@ function updateAufgabe() {
 	        }
 	        xmlhttp.onreadystatechange = function() {
 	            if (this.readyState == 4 && this.status == 200) {
-	                document.getElementById("txtHint").innerHTML = this.responseText;
+			    document.getElementById("txtHint").innerHTML = this.responseText;
+			    // Seite neu laden, damit select passt.
+			    location.reload();
 	        }
         };
 		
@@ -95,8 +97,6 @@ function updateAufgabe() {
     }
 	
 
-	// Seitre neu laden, damit das select passt.
-	location.reload();
 		
 		
    
