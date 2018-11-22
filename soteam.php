@@ -51,7 +51,7 @@ $result = mysqli_query($conn,$sql);
 		<?php
 			$tag = date("d");
 			
-			echo "<table class=\"table table-bordered\"> 
+			echo "<table class=\"table table-striped\"> 
 				<tr>
 				<th>Name</th>
 				<th>Heute (Std)</th>

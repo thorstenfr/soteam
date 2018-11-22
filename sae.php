@@ -62,7 +62,7 @@ $sql = "select tmp_user_id, tmp_user_nick, tmp_heute, tmp_woche, tmp_monat, tmp_
 $result = mysqli_query($conn,$sql);
 
 
-			echo "<table class=\"table table-bordered\"> 
+			echo "<table class=\"table table-striped\"> 
 				<tr>
 				<th>Name</th>
 				<th>Heute (Std)</th>
@@ -76,7 +76,7 @@ $result = mysqli_query($conn,$sql);
 				echo "<td>" . $row['tmp_user_nick'] . "</td>";    
 				echo "<td id=\"tmp_heute\">" . $row['tmp_heute']/4 . "</td>";
 				echo "<td>" . $row['tmp_woche']/4 . "</td>";
-				echo "<td>" . $row['tmp_monat']/4 . " (" . round(($row['tmp_monat']/4)/$tag,2) . " Std/Tag) </td>";
+				echo "<td>" . $row['tmp_monat']/4 . "</td>";
 				echo "<td>" . $row['tmp_jahr']/4 . "</td>";
 				echo "</tr>";
 			}
