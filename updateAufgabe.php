@@ -32,8 +32,7 @@ $user = check_user();
 	}
 	
 	$sql = "UPDATE `sae_aufgabe` SET `auf_beschreibung` = '" . $beschreibung . "' WHERE `sae_aufgabe`.`auf_id` = " . $aufid . " AND sae_team_id=" . $user['sae_team_id'];
-	error_log("SQL: (" . $sql . ")", 0);/Users/thorsten/.bitnami/stackman/machines/xampp/volumes/root/htdocs/soteam
-		
+		error_log("SQL: (" . $sql . ")", 0);
 	
 	
 	
