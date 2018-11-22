@@ -52,8 +52,8 @@ if(isset($_GET['register'])) {
 	if(!$error) {	
 		$passwort_hash = password_hash($passwort, PASSWORD_DEFAULT);
 		
-		$statement = $pdo->prepare("INSERT INTO users (email, passwort, vorname, nachname) VALUES (:email, :passwort, :vorname, :nachname)");
-		$result = $statement->execute(array('email' => $email, 'passwort' => $passwort_hash, 'vorname' => $vorname, 'nachname' => $nachname));
+		$statement = $pdo->prepare("INSERT INTO users (email, passwort, vorname, nachname, sae_team_id, rollen_id) VALUES (:email, :passwort, :vorname, :nachname, :sae_team_id, :rollen_id)");
+		$result = $statement->execute(array('email' => $email, 'passwort' => $passwort_hash, 'vorname' => $vorname, 'nachname' => $nachname, 'sae_team_id' => 99, 'rollen_id' => 1));
 		
 		if($result) {		
 			echo 'Du wurdest erfolgreich registriert. <a href="login.php">Zum Login</a>';
