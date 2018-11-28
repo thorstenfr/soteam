@@ -80,7 +80,7 @@ $result = mysqli_query($conn,$sql);
 				echo "<td id=\"tmp_heute\">" . $row['tmp_heute']/4 . "</td>";
 				echo "<td>" . $row['tmp_woche']/4 . "</td>";
 				echo "<td>" . $row['tmp_monat']/4 . "</td>";
-				echo "<td>" . $row['tmp_jahr']/4 . "<br><span style=\"font-size : 8px;\">" . $row['tmp_jahr_top1_bez']." (".$row['tmp_jahr_top1_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . $row['tmp_jahr_top2_bez']." (".$row['tmp_jahr_top2_wert']/4 . ")</td>";
+				echo "<td>" . $row['tmp_jahr']/4 . "<br><span style=\"font-size : 8px;\">" . substr($row['tmp_jahr_top1_bez'],0,10)." (".$row['tmp_jahr_top1_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_jahr_top2_bez'],0,10)." (".$row['tmp_jahr_top2_wert']/4 . ")</td>";
 				echo "</tr>";
 			}
 			echo "</table>";
