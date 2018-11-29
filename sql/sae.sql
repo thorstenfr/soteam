@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.7
+-- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Erstellungszeit: 21. Nov 2018 um 22:15
--- Server-Version: 10.1.30-MariaDB
--- PHP-Version: 7.2.1
+-- Host: 127.0.0.1
+-- Erstellungszeit: 29. Nov 2018 um 11:02
+-- Server-Version: 10.1.28-MariaDB
+-- PHP-Version: 7.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -68,8 +68,8 @@ CREATE TABLE `sae_rollen` (
 
 INSERT INTO `sae_rollen` (`id`, `bezeichnung`, `kurz`) VALUES
 (1, 'Benutzer', 'ben'),
-(2, 'Experte', 'exp'),
-(3, 'Admin', 'adm');
+(2, 'Arbeitsbiene', 'hda'),
+(3, 'Legende', 'leg');
 
 -- --------------------------------------------------------
 
@@ -122,11 +122,35 @@ CREATE TABLE `securitytokens` (
 CREATE TABLE `tmp_buchung` (
   `tmp_user_id` int(11) NOT NULL,
   `tmp_user_nick` varchar(5) NOT NULL,
-  `tmp_heute` int(11) DEFAULT NULL,
-  `tmp_woche` int(11) DEFAULT NULL,
-  `tmp_monat` int(11) DEFAULT NULL,
+  `tmp_heute` int(11) NOT NULL,
+  `tmp_woche` int(11) NOT NULL,
+  `tmp_monat` int(11) NOT NULL,
   `tmp_jahr` int(11) NOT NULL,
-  `tmp_team_id` int(11) NOT NULL
+  `tmp_team_id` int(11) NOT NULL,
+  `tmp_jahr_top1_bez` varchar(45) NOT NULL,
+  `tmp_jahr_top2_bez` varchar(45) NOT NULL,
+  `tmp_jahr_top3_bez` varchar(45) NOT NULL,
+  `tmp_jahr_top1_wert` int(11) NOT NULL,
+  `tmp_jahr_top2_wert` int(11) NOT NULL,
+  `tmp_jahr_top3_wert` int(11) NOT NULL,
+  `tmp_monat_top1_bez` varchar(45) NOT NULL,
+  `tmp_monat_top2_bez` varchar(45) NOT NULL,
+  `tmp_monat_top3_bez` varchar(45) NOT NULL,
+  `tmp_monat_top1_wert` int(11) NOT NULL,
+  `tmp_monat_top2_wert` int(11) NOT NULL,
+  `tmp_monat_top3_wert` int(11) NOT NULL,
+  `tmp_woche_top1_bez` varchar(45) NOT NULL,
+  `tmp_woche_top2_bez` varchar(45) NOT NULL,
+  `tmp_woche_top3_bez` varchar(45) NOT NULL,
+  `tmp_woche_top1_wert` int(11) NOT NULL,
+  `tmp_woche_top2_wert` int(11) NOT NULL,
+  `tmp_woche_top3_wert` int(11) NOT NULL,
+  `tmp_tag_top1_bez` varchar(45) NOT NULL,
+  `tmp_tag_top2_bez` varchar(45) NOT NULL,
+  `tmp_tag_top3_bez` varchar(45) NOT NULL,
+  `tmp_tag_top1_wert` int(11) NOT NULL,
+  `tmp_tag_top2_wert` int(11) NOT NULL,
+  `tmp_tag_top3_wert` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -169,18 +193,18 @@ CREATE TABLE `users_has_sae_aufgabe` (
 -- Indizes für die Tabelle `sae_aufgabe`
 --
 ALTER TABLE `sae_aufgabe`
-  ADD PRIMARY KEY (`auf_id`),
+  ADD PRIMARY KEY (`auf_id`,`sae_team_id`),
   ADD KEY `gehoert_zu` (`sae_tae_fk`),
-  ADD KEY `aufg_team` (`sae_team_id`);
+  ADD KEY `fk_sae_aufgabe_sae_team1_idx` (`sae_team_id`);
 
 --
 -- Indizes für die Tabelle `sae_buchung`
 --
 ALTER TABLE `sae_buchung`
-  ADD PRIMARY KEY (`buc_id`),
+  ADD PRIMARY KEY (`buc_id`,`sae_team_id`),
   ADD KEY `user_add` (`users_id`),
   ADD KEY `fk_sae_buchung_sae_aufgabe1_idx` (`sae_aufgabe_auf_id`),
-  ADD KEY `sae_team_id` (`sae_team_id`);
+  ADD KEY `fk_sae_buchung_sae_team1_idx` (`sae_team_id`);
 
 --
 -- Indizes für die Tabelle `sae_rollen`
@@ -192,8 +216,7 @@ ALTER TABLE `sae_rollen`
 -- Indizes für die Tabelle `sae_taetigkeit`
 --
 ALTER TABLE `sae_taetigkeit`
-  ADD PRIMARY KEY (`tae_id`),
-  ADD KEY `sae_team_id` (`sae_team_id`);
+  ADD PRIMARY KEY (`tae_id`);
 
 --
 -- Indizes für die Tabelle `sae_team`
@@ -211,16 +234,16 @@ ALTER TABLE `securitytokens`
 -- Indizes für die Tabelle `tmp_buchung`
 --
 ALTER TABLE `tmp_buchung`
-  ADD PRIMARY KEY (`tmp_user_id`),
-  ADD KEY `tmp_team_id` (`tmp_team_id`);
+  ADD PRIMARY KEY (`tmp_user_id`);
 
 --
 -- Indizes für die Tabelle `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`id`,`sae_team_id`),
   ADD UNIQUE KEY `email` (`email`),
-  ADD KEY `sae_team_id` (`sae_team_id`);
+  ADD KEY `fk_users_sae_team1_idx` (`sae_team_id`),
+  ADD KEY `fk_users_sae_rolle` (`rollen_id`);
 
 --
 -- Indizes für die Tabelle `users_has_sae_aufgabe`
@@ -238,13 +261,13 @@ ALTER TABLE `users_has_sae_aufgabe`
 -- AUTO_INCREMENT für Tabelle `sae_aufgabe`
 --
 ALTER TABLE `sae_aufgabe`
-  MODIFY `auf_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `auf_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT für Tabelle `sae_buchung`
 --
 ALTER TABLE `sae_buchung`
-  MODIFY `buc_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `buc_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
 
 --
 -- AUTO_INCREMENT für Tabelle `sae_rollen`
@@ -256,25 +279,25 @@ ALTER TABLE `sae_rollen`
 -- AUTO_INCREMENT für Tabelle `sae_taetigkeit`
 --
 ALTER TABLE `sae_taetigkeit`
-  MODIFY `tae_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `tae_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT für Tabelle `sae_team`
 --
 ALTER TABLE `sae_team`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 
 --
 -- AUTO_INCREMENT für Tabelle `securitytokens`
 --
 ALTER TABLE `securitytokens`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=163;
 
 --
 -- AUTO_INCREMENT für Tabelle `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints der exportierten Tabellen
@@ -284,7 +307,7 @@ ALTER TABLE `users`
 -- Constraints der Tabelle `sae_aufgabe`
 --
 ALTER TABLE `sae_aufgabe`
-  ADD CONSTRAINT `aufg_team` FOREIGN KEY (`sae_team_id`) REFERENCES `sae_team` (`id`),
+  ADD CONSTRAINT `fk_sae_aufgabe_sae_team1` FOREIGN KEY (`sae_team_id`) REFERENCES `sae_team` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `gehoert_zu` FOREIGN KEY (`sae_tae_fk`) REFERENCES `sae_taetigkeit` (`tae_id`);
 
 --
@@ -292,24 +315,20 @@ ALTER TABLE `sae_aufgabe`
 --
 ALTER TABLE `sae_buchung`
   ADD CONSTRAINT `fk_sae_buchung_sae_aufgabe1` FOREIGN KEY (`sae_aufgabe_auf_id`) REFERENCES `sae_aufgabe` (`auf_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `sae_buchung_ibfk_1` FOREIGN KEY (`sae_team_id`) REFERENCES `sae_team` (`id`),
+  ADD CONSTRAINT `fk_sae_buchung_sae_team1` FOREIGN KEY (`sae_team_id`) REFERENCES `sae_team` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `user_add` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`);
-
---
--- Constraints der Tabelle `sae_taetigkeit`
---
-ALTER TABLE `sae_taetigkeit`
-  ADD CONSTRAINT `sae_taetigkeit_ibfk_1` FOREIGN KEY (`sae_team_id`) REFERENCES `sae_team` (`id`);
-
---
--- Constraints der Tabelle `tmp_buchung`
---
-ALTER TABLE `tmp_buchung`
-  ADD CONSTRAINT `tmp_buchung_ibfk_1` FOREIGN KEY (`tmp_team_id`) REFERENCES `sae_team` (`id`);
 
 --
 -- Constraints der Tabelle `users`
 --
 ALTER TABLE `users`
-  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`sae_team_id`) REFERENCES `sae_team` (`id`);
+  ADD CONSTRAINT `fk_users_sae_rolle` FOREIGN KEY (`rollen_id`) REFERENCES `sae_rollen` (`id`),
+  ADD CONSTRAINT `fk_users_sae_team1` FOREIGN KEY (`sae_team_id`) REFERENCES `sae_team` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints der Tabelle `users_has_sae_aufgabe`
+--
+ALTER TABLE `users_has_sae_aufgabe`
+  ADD CONSTRAINT `fk_users_has_sae_aufgabe_sae_aufgabe1` FOREIGN KEY (`sae_aufgabe_auf_id`) REFERENCES `sae_aufgabe` (`auf_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_users_has_sae_aufgabe_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
