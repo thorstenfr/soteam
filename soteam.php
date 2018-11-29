@@ -34,34 +34,6 @@ if (!$conn) {
     die('Could not connect: ' . mysqli_error($con));
 }
 
-/*
-
-SELECT SUM(sae_buchung.buc_wert) AS Wert, sae_aufgabe.auf_beschreibung FROM `sae_buchung`, sae_aufgabe 
-WHERE sae_aufgabe.auf_id=sae_buchung.sae_aufgabe_auf_id
-AND users_id=2 AND DAY(buc_created_at)=DAY(NOW()) AND MONTH(buc_created_at)=MONTH(NOW()) AND YEAR(buc_created_at)=YEAR(NOW())
-GROUP BY sae_aufgabe.auf_beschreibung
-ORDER BY Wert DESC
-LIMIT 3
-
-
-*/
-
-
-$sql_top3_user_heute = "SELECT SUM(sae_buchung.buc_wert) AS Wert, sae_aufgabe.auf_beschreibung\n"
-
-    . "FROM `sae_buchung`, sae_aufgabe\n"
-
-    . "WHERE sae_aufgabe.auf_id=sae_buchung.sae_aufgabe_auf_id\n"
-
-    . "AND users_id=2 AND DAY(buc_created_at)=DAY(NOW()) AND MONTH(buc_created_at)=MONTH(NOW()) AND YEAR(buc_created_at)=YEAR(NOW())\n"
-
-    . "GROUP BY sae_aufgabe.auf_beschreibung\n"
-
-    . "ORDER BY Wert DESC\n"
-
-    . "LIMIT 3";
-
-
 
 $sql = "select tmp_user_id, tmp_user_nick, tmp_heute, tmp_woche, tmp_monat, tmp_jahr\n"
 

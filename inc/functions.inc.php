@@ -50,7 +50,7 @@ function refresh_tmp() {
 	$upd = $pdo->prepare($sql);		
 	$result = $upd->execute();
 	
-	
+	// Jahr
 	$sql = "SELECT DISTINCT(tmp_user_id) FROM tmp_buchung";
 	$user_ids = $pdo->query($sql);
 	foreach ($user_ids as $row) {
@@ -81,6 +81,127 @@ function refresh_tmp() {
 				$result = $upd->execute();
 				
 				$sql = "UPDATE tmp_buchung SET tmp_jahr_top".$nr."_wert=\"".intval($auf['Wert'])."\" WHERE tmp_user_id=".intval($row['tmp_user_id']);
+				$upd = $pdo->prepare($sql);		
+				$result = $upd->execute();
+				
+			}
+		}
+		
+		// Monat
+	$sql = "SELECT DISTINCT(tmp_user_id) FROM tmp_buchung";
+	$user_ids = $pdo->query($sql);
+	foreach ($user_ids as $row) {
+		$sql = "SELECT SUM(buc_wert) AS Wert, users.nick, sae_aufgabe.auf_beschreibung AS Beschreibung\n"
+		
+		    . "FROM sae_buchung, users, sae_aufgabe\n"
+		
+		    . "WHERE sae_buchung.users_id=users.id\n"
+		
+		    . "AND sae_buchung.users_id=".intval($row['tmp_user_id'])."\n"
+		
+		    . "AND sae_buchung.sae_aufgabe_auf_id=sae_aufgabe.auf_id\n"
+		
+		    . "AND YEAR(sae_buchung.buc_created_at)=YEAR(NOW())\n"
+			
+			. "AND MONTH(sae_buchung.buc_created_at)=MONTH(NOW())\n"
+		
+		    . "GROUP BY(sae_buchung.sae_aufgabe_auf_id)\n"
+		
+		    . "ORDER BY Wert DESC\n"
+		
+					. "LIMIT 3";
+			
+			$aufwende = $pdo->query($sql);
+			$nr=0;
+			foreach ($aufwende as $auf) {
+				$nr=$nr+1;
+				$sql = "UPDATE tmp_buchung SET tmp_monat_top".$nr."_bez=\"".$auf['Beschreibung']."\" WHERE tmp_user_id=".intval($row['tmp_user_id']);
+				$upd = $pdo->prepare($sql);		
+				$result = $upd->execute();
+				
+				$sql = "UPDATE tmp_buchung SET tmp_monat_top".$nr."_wert=\"".intval($auf['Wert'])."\" WHERE tmp_user_id=".intval($row['tmp_user_id']);
+				$upd = $pdo->prepare($sql);		
+				$result = $upd->execute();
+				
+			}
+		}
+			// Woche
+	$sql = "SELECT DISTINCT(tmp_user_id) FROM tmp_buchung";
+	$user_ids = $pdo->query($sql);
+	foreach ($user_ids as $row) {
+		$sql = "SELECT SUM(buc_wert) AS Wert, users.nick, sae_aufgabe.auf_beschreibung AS Beschreibung\n"
+		
+		    . "FROM sae_buchung, users, sae_aufgabe\n"
+		
+		    . "WHERE sae_buchung.users_id=users.id\n"
+		
+		    . "AND sae_buchung.users_id=".intval($row['tmp_user_id'])."\n"
+		
+		    . "AND sae_buchung.sae_aufgabe_auf_id=sae_aufgabe.auf_id\n"
+		
+		    . "AND YEAR(sae_buchung.buc_created_at)=YEAR(NOW())\n"
+			
+			. "AND MONTH(sae_buchung.buc_created_at)=MONTH(NOW())\n"
+			
+			. "AND WEEK(sae_buchung.buc_created_at)=WEEK(NOW())\n"
+		
+		    . "GROUP BY(sae_buchung.sae_aufgabe_auf_id)\n"
+		
+		    . "ORDER BY Wert DESC\n"
+		
+					. "LIMIT 3";
+			
+			$aufwende = $pdo->query($sql);
+			$nr=0;
+			foreach ($aufwende as $auf) {
+				$nr=$nr+1;
+				$sql = "UPDATE tmp_buchung SET tmp_woche_top".$nr."_bez=\"".$auf['Beschreibung']."\" WHERE tmp_user_id=".intval($row['tmp_user_id']);
+				$upd = $pdo->prepare($sql);		
+				$result = $upd->execute();
+				
+				$sql = "UPDATE tmp_buchung SET tmp_woche_top".$nr."_wert=\"".intval($auf['Wert'])."\" WHERE tmp_user_id=".intval($row['tmp_user_id']);
+				$upd = $pdo->prepare($sql);		
+				$result = $upd->execute();
+				
+			}
+		}
+		// Tag
+	$sql = "SELECT DISTINCT(tmp_user_id) FROM tmp_buchung";
+	$user_ids = $pdo->query($sql);
+	foreach ($user_ids as $row) {
+		$sql = "SELECT SUM(buc_wert) AS Wert, users.nick, sae_aufgabe.auf_beschreibung AS Beschreibung\n"
+		
+		    . "FROM sae_buchung, users, sae_aufgabe\n"
+		
+		    . "WHERE sae_buchung.users_id=users.id\n"
+		
+		    . "AND sae_buchung.users_id=".intval($row['tmp_user_id'])."\n"
+		
+		    . "AND sae_buchung.sae_aufgabe_auf_id=sae_aufgabe.auf_id\n"
+		
+		    . "AND YEAR(sae_buchung.buc_created_at)=YEAR(NOW())\n"
+			
+			. "AND MONTH(sae_buchung.buc_created_at)=MONTH(NOW())\n"
+			
+			. "AND WEEK(sae_buchung.buc_created_at)=WEEK(NOW())\n"
+			
+			. "AND DAY(sae_buchung.buc_created_at)=DAY(NOW())\n"
+		
+		    . "GROUP BY(sae_buchung.sae_aufgabe_auf_id)\n"
+		
+		    . "ORDER BY Wert DESC\n"
+		
+					. "LIMIT 3";
+			
+			$aufwende = $pdo->query($sql);
+			$nr=0;
+			foreach ($aufwende as $auf) {
+				$nr=$nr+1;
+				$sql = "UPDATE tmp_buchung SET tmp_tag_top".$nr."_bez=\"".$auf['Beschreibung']."\" WHERE tmp_user_id=".intval($row['tmp_user_id']);
+				$upd = $pdo->prepare($sql);		
+				$result = $upd->execute();
+				
+				$sql = "UPDATE tmp_buchung SET tmp_tag_top".$nr."_wert=\"".intval($auf['Wert'])."\" WHERE tmp_user_id=".intval($row['tmp_user_id']);
 				$upd = $pdo->prepare($sql);		
 				$result = $upd->execute();
 				

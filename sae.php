@@ -54,7 +54,7 @@ $stmt->close();
 $res=refresh_tmp();
 
 
-$sql = "select tmp_user_id, tmp_user_nick, tmp_heute, tmp_woche, tmp_monat, tmp_jahr, tmp_jahr_top1_bez,tmp_jahr_top1_wert,tmp_jahr_top2_bez,tmp_jahr_top2_wert\n"
+$sql = "select tmp_user_id, tmp_user_nick, tmp_heute, tmp_woche, tmp_monat, tmp_jahr, tmp_jahr_top1_bez,tmp_jahr_top1_wert,tmp_jahr_top2_bez,tmp_jahr_top2_wert,tmp_jahr_top3_bez,tmp_jahr_top3_wert,tmp_monat_top1_bez,tmp_monat_top1_wert,tmp_monat_top2_bez,tmp_monat_top2_wert,tmp_monat_top3_bez,tmp_monat_top3_wert,tmp_woche_top1_bez,tmp_woche_top1_wert,tmp_woche_top2_bez,tmp_woche_top2_wert,tmp_woche_top3_bez,tmp_woche_top3_wert,tmp_tag_top1_bez,tmp_tag_top1_wert,tmp_tag_top2_bez,tmp_tag_top2_wert,tmp_tag_top3_bez,tmp_tag_top3_wert\n"
 
     . "FROM tmp_buchung\n"
 	. "WHERE tmp_user_nick<>'deakt'"
@@ -77,10 +77,14 @@ $result = mysqli_query($conn,$sql);
 			while($row = mysqli_fetch_array($result)) {
 				echo "<tr>";
 				echo "<td>" . $row['tmp_user_nick'] . "</td>";    
-				echo "<td id=\"tmp_heute\">" . $row['tmp_heute']/4 . "</td>";
-				echo "<td>" . $row['tmp_woche']/4 . "</td>";
-				echo "<td>" . $row['tmp_monat']/4 . "</td>";
-				echo "<td>" . $row['tmp_jahr']/4 . "<br><span style=\"font-size : 8px;\">" . substr($row['tmp_jahr_top1_bez'],0,10)." (".$row['tmp_jahr_top1_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_jahr_top2_bez'],0,10)." (".$row['tmp_jahr_top2_wert']/4 . ")</td>";
+				
+				echo "<td id=\"tmp_heute\">" . $row['tmp_heute']/4 . "<br><span style=\"font-size : 8px;\">" . substr($row['tmp_tag_top1_bez'],0,15)." (".$row['tmp_tag_top1_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_tag_top2_bez'],0,15)." (".$row['tmp_tag_top2_wert']/4 . ")</td>";
+				
+				echo "<td>" . $row['tmp_woche']/4 . "<br><span style=\"font-size : 8px;\">" . substr($row['tmp_woche_top1_bez'],0,15)." (".$row['tmp_woche_top1_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_woche_top2_bez'],0,15)." (".$row['tmp_woche_top2_wert']/4 . ")</td>";
+				
+				echo "<td>" . $row['tmp_monat']/4 . "<br><span style=\"font-size : 8px;\">" . substr($row['tmp_monat_top1_bez'],0,15)." (".$row['tmp_monat_top1_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_monat_top2_bez'],0,15)." (".$row['tmp_monat_top2_wert']/4 . ")</td>";
+				
+				echo "<td>" . $row['tmp_jahr']/4 . "<br><span style=\"font-size : 8px;\">" . substr($row['tmp_jahr_top1_bez'],0,15)." (".$row['tmp_jahr_top1_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_jahr_top2_bez'],0,15)." (".$row['tmp_jahr_top2_wert']/4 . ")</td>";
 				echo "</tr>";
 			}
 			echo "</table>";
