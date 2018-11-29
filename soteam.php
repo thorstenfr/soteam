@@ -115,7 +115,11 @@ include("templates/footer.inc.php")
 
 
 <script>
-document.getElementById("tmp_heute").addEventListener("onchange", myFunction);
+	var el = document.getElementById("tmp_heute");
+			if (el) {
+				el.addEventListener("onchange", myFuntion);
+			}
+	// document.getElementById("tmp_heute").addEventListener("onchange", myFunction);
 
 function myFunction() {
     var x = document.getElementById("tmp_heute");
