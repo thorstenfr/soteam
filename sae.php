@@ -53,16 +53,19 @@ $stmt->close();
 // Tmp-Tabelle aktualisieren
 $res=refresh_tmp();
 
-$sql = "select tmp_user_id, tmp_user_nick, tmp_heute, tmp_woche, tmp_monat, tmp_jahr\n"
+
+$sql = "select tmp_user_id, tmp_user_nick, tmp_heute, tmp_woche, tmp_monat, tmp_jahr, tmp_jahr_top1_bez,tmp_jahr_top1_wert,tmp_jahr_top2_bez,tmp_jahr_top2_wert\n"
 
     . "FROM tmp_buchung\n"
-	. "WHERE tmp_user_nick<>'deakt'";
+	. "WHERE tmp_user_nick<>'deakt'"
+	. " AND tmp_team_id=".$user['sae_team_id']
+	. " ORDER BY tmp_heute DESC";
 
 	
 $result = mysqli_query($conn,$sql);
 
 
-			echo "<table class=\"table table-bordered\"> 
+			echo "<table class=\"table table-striped\"> 
 				<tr>
 				<th>Name</th>
 				<th>Heute (Std)</th>
@@ -76,8 +79,8 @@ $result = mysqli_query($conn,$sql);
 				echo "<td>" . $row['tmp_user_nick'] . "</td>";    
 				echo "<td id=\"tmp_heute\">" . $row['tmp_heute']/4 . "</td>";
 				echo "<td>" . $row['tmp_woche']/4 . "</td>";
-				echo "<td>" . $row['tmp_monat']/4 . " (" . round(($row['tmp_monat']/4)/$tag,2) . " Std/Tag) </td>";
-				echo "<td>" . $row['tmp_jahr']/4 . "</td>";
+				echo "<td>" . $row['tmp_monat']/4 . "</td>";
+				echo "<td>" . $row['tmp_jahr']/4 . "<br><span style=\"font-size : 8px;\">" . substr($row['tmp_jahr_top1_bez'],0,10)." (".$row['tmp_jahr_top1_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_jahr_top2_bez'],0,10)." (".$row['tmp_jahr_top2_wert']/4 . ")</td>";
 				echo "</tr>";
 			}
 			echo "</table>";

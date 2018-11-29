@@ -1,0 +1,11 @@
+SQL-Statements
+
+SELECT SUM(buc_wert)/4 AS Wert, users.nick, sae_aufgabe.auf_beschreibung 
+FROM sae_buchung, users, sae_aufgabe
+WHERE sae_buchung.users_id=users.id
+AND sae_buchung.users_id=9
+AND sae_buchung.sae_aufgabe_auf_id=sae_aufgabe.auf_id
+AND YEAR(sae_buchung.buc_created_at)=YEAR(NOW())
+GROUP BY(sae_buchung.sae_aufgabe_auf_id)
+ORDER BY Wert DESC
+LIMIT 3
