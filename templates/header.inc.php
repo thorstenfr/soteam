@@ -12,7 +12,8 @@
     <link rel="stylesheet" href="css/bootstrap-theme.min.css"> 
 
     <!-- Custom styles for this template -->
-    <link href="css/style.css" rel="stylesheet"> 
+    <link  rel="stylesheet" href="css/style.css"> 
+	<link rel="stylesheet" href="css/formate.css">
 	
     <script>
 function addBuchung(str) {
@@ -33,6 +34,7 @@ function addBuchung(str) {
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 document.getElementById("txtHint").innerHTML = this.responseText;
+				myShowTop3();		
             }
         };
 		str = str + ":" + msg;

@@ -10,15 +10,15 @@ $user = check_user();
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-<style>
-
-</style>
-</head>
+	<head>
+		<style>
+		</style>
+		<link rel="stylesheet" href="css/style.css">
+	</head>
 <body>
 
 <?php
-require_once("inc/config.inc.php");
+
 
 // Beispiel 2
 $data = "foo:*:1023:1000::/home/foo:/bin/sh";
@@ -71,18 +71,18 @@ $sql = "select tmp_user_id, tmp_user_nick, tmp_heute, tmp_woche, tmp_monat, tmp_
 			echo "<table class=\"table table-striped\"> 
 				<tr>
 				<th>Name</th>
-				<th style=\"text-align : center;\">Heute (Std)</th>
-				<th style=\"text-align : center;\">Woche (Std)</th>
-				<th style=\"text-align : center;\">Monat (Std)</th>
-				<th style=\"display : none;\">Jahr (Std)</th>
+				<th>Heute (Std)</th>
+				<th>Woche (Std)</th>
+				<th>Monat (Std)</th>
+				<th>Jahr (Std)</th>
 				</tr>";
 			
 			while($row = mysqli_fetch_array($result)) {
 				echo "<tr>";
 				echo "<td>" . $row['tmp_user_nick'] . "</td>";    
 				
-				echo "<td style='text-align : center;'>" . $row['tmp_heute']/4 . 
-					"<ol style=\"font-size : 0.5em;padding-left : 0px;margin-bottom: 0px;text-align : left;\">
+				echo "<td>" . $row['tmp_heute']/4 . 
+					"<ol class='top3'>
 							<li>" . substr($row['tmp_tag_top1_bez'],0,8)." (".$row['tmp_tag_top1_wert']/4 . ")
 							</li>
 							<li>" . substr($row['tmp_tag_top2_bez'],0,8)." (".$row['tmp_tag_top2_wert']/4 . ")
@@ -92,7 +92,7 @@ $sql = "select tmp_user_id, tmp_user_nick, tmp_heute, tmp_woche, tmp_monat, tmp_
 						</ol>
 					</td>";
 				
-					echo "<td style='text-align : center;'>" . $row['tmp_woche']/4 . 
+					echo "<td>" . $row['tmp_woche']/4 . 
 					"<ol style=\"font-size : 0.5em;padding-left : 0px;margin-bottom: 0px;text-align : left;\">
 							<li>" . substr($row['tmp_woche_top1_bez'],0,8)." (".$row['tmp_woche_top1_wert']/4 . ")
 							</li>
@@ -103,7 +103,7 @@ $sql = "select tmp_user_id, tmp_user_nick, tmp_heute, tmp_woche, tmp_monat, tmp_
 						</ol>
 					</td>";
 				
-					echo "<td style='text-align : center;'>" . $row['tmp_monat']/4 . 
+					echo "<td>" . $row['tmp_monat']/4 . 
 					"<ol style=\"font-size : 0.5em;padding-left : 0px;margin-bottom: 0px;text-align : left;\">
 							<li>" . substr($row['tmp_monat_top1_bez'],0,8)." (".$row['tmp_monat_top1_wert']/4 . ")
 							</li>
@@ -114,7 +114,17 @@ $sql = "select tmp_user_id, tmp_user_nick, tmp_heute, tmp_woche, tmp_monat, tmp_
 						</ol>
 					</td>";
 				
-				echo "<td style=\"display : none;\">" . $row['tmp_jahr']/4 . "<br><span style=\"font-size : 8px;\">" . substr($row['tmp_jahr_top1_bez'],0,15)." (".$row['tmp_jahr_top1_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_jahr_top2_bez'],0,15)." (".$row['tmp_jahr_top2_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_jahr_top3_bez'],0,15)." (".$row['tmp_jahr_top3_wert']/4 . ")</td>";
+				echo "<td>" . $row['tmp_jahr']/4 . 
+					"<ol style=\"font-size : 0.5em;padding-left : 0px;margin-bottom: 0px;text-align : left;\">
+							<li>" . substr($row['tmp_jahr_top1_bez'],0,8)." (".$row['tmp_jahr_top1_wert']/4 . ")
+							</li>
+							<li>" . substr($row['tmp_jahr_top2_bez'],0,8)." (".$row['tmp_jahr_top2_wert']/4 . ")
+							</li>
+							<li>" . substr($row['tmp_jahr_top3_bez'],0,8)." (".$row['tmp_jahr_top3_wert']/4 . ")
+							</li>
+						</ol>
+				</td>";
+				
 				echo "</tr>";
 			}
 			echo "</table>";

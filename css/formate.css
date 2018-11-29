@@ -1,0 +1,9 @@
+.top3 {
+	font-size : 0.5em;
+	padding-left : 0px;
+	margin-bottom: 0px;
+	text-align : left;
+}
+.notop3 {
+	display: none;
+}
