@@ -71,10 +71,10 @@ $sql = "select tmp_user_id, tmp_user_nick, tmp_heute, tmp_woche, tmp_monat, tmp_
 			echo "<table class=\"table table-striped\"> 
 				<tr>
 				<th>Name</th>
-				<th>Heute (Std)</th>
-				<th>Woche (Std)</th>
-				<th>Monat (Std)</th>
-				<th>Jahr (Std)</th>
+				<th>Heute</th>
+				<th>Woche</th>
+				<th>Monat</th>
+				<th>Jahr</th>
 				</tr>";
 			
 			while($row = mysqli_fetch_array($result)) {
