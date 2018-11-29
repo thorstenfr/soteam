@@ -39,16 +39,16 @@ if (!$conn) {
 }
 
 
+if ($wert!=0) {
+	// DS soll nicht geschrieben werden, nur anzeige
+	$stmt = $conn->prepare("INSERT INTO sae_buchung (buc_wert, users_id, sae_aufgabe_auf_id, buc_kommentar, sae_team_id)
+		VALUES (?, ?, ?, ?, ?)");
 
+	$stmt->bind_param("iiisi", $wert, $user_id, $auf_id, $kommentar, $user['sae_team_id']);
 
-
-$stmt = $conn->prepare("INSERT INTO sae_buchung (buc_wert, users_id, sae_aufgabe_auf_id, buc_kommentar, sae_team_id)
-VALUES (?, ?, ?, ?, ?)");
-
-$stmt->bind_param("iiisi", $wert, $user_id, $auf_id, $kommentar, $user['sae_team_id']);
-
-$stmt->execute();
-$stmt->close();
+	$stmt->execute();
+	$stmt->close();
+}
 
 // Tmp-Tabelle aktualisieren
 $res=refresh_tmp();
@@ -78,13 +78,13 @@ $result = mysqli_query($conn,$sql);
 				echo "<tr>";
 				echo "<td>" . $row['tmp_user_nick'] . "</td>";    
 				
-				echo "<td id=\"tmp_heute\">" . $row['tmp_heute']/4 . "<br><span style=\"font-size : 8px;\">" . substr($row['tmp_tag_top1_bez'],0,15)." (".$row['tmp_tag_top1_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_tag_top2_bez'],0,15)." (".$row['tmp_tag_top2_wert']/4 . ")</td>";
+				echo "<td id=\"tmp_heute\">" . $row['tmp_heute']/4 . "<br><span style=\"font-size : 8px;\">" . substr($row['tmp_tag_top1_bez'],0,15)." (".$row['tmp_tag_top1_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_tag_top2_bez'],0,15)." (".$row['tmp_tag_top2_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_tag_top3_bez'],0,15)." (".$row['tmp_tag_top3_wert']/4 . ")</td>";
 				
-				echo "<td>" . $row['tmp_woche']/4 . "<br><span style=\"font-size : 8px;\">" . substr($row['tmp_woche_top1_bez'],0,15)." (".$row['tmp_woche_top1_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_woche_top2_bez'],0,15)." (".$row['tmp_woche_top2_wert']/4 . ")</td>";
+				echo "<td>" . $row['tmp_woche']/4 . "<br><span style=\"font-size : 8px;\">" . substr($row['tmp_woche_top1_bez'],0,15)." (".$row['tmp_woche_top1_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_woche_top2_bez'],0,15)." (".$row['tmp_woche_top2_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_woche_top3_bez'],0,15)." (".$row['tmp_woche_top3_wert']/4 . ")</td>";
 				
-				echo "<td>" . $row['tmp_monat']/4 . "<br><span style=\"font-size : 8px;\">" . substr($row['tmp_monat_top1_bez'],0,15)." (".$row['tmp_monat_top1_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_monat_top2_bez'],0,15)." (".$row['tmp_monat_top2_wert']/4 . ")</td>";
+				echo "<td>" . $row['tmp_monat']/4 . "<br><span style=\"font-size : 8px;\">" . substr($row['tmp_monat_top1_bez'],0,15)." (".$row['tmp_monat_top1_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_monat_top2_bez'],0,15)." (".$row['tmp_monat_top2_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_monat_top3_bez'],0,15)." (".$row['tmp_monat_top3_wert']/4 . ")</td>";
 				
-				echo "<td>" . $row['tmp_jahr']/4 . "<br><span style=\"font-size : 8px;\">" . substr($row['tmp_jahr_top1_bez'],0,15)." (".$row['tmp_jahr_top1_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_jahr_top2_bez'],0,15)." (".$row['tmp_jahr_top2_wert']/4 . ")</td>";
+				echo "<td>" . $row['tmp_jahr']/4 . "<br><span style=\"font-size : 8px;\">" . substr($row['tmp_jahr_top1_bez'],0,15)." (".$row['tmp_jahr_top1_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_jahr_top2_bez'],0,15)." (".$row['tmp_jahr_top2_wert']/4 . ")<br><span style=\"font-size : 8px;\">" . substr($row['tmp_jahr_top3_bez'],0,15)." (".$row['tmp_jahr_top3_wert']/4 . ")</td>";
 				echo "</tr>";
 			}
 			echo "</table>";

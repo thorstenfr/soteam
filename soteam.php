@@ -3,7 +3,7 @@ session_start();
 require_once("inc/config.inc.php");
 require_once("inc/functions.inc.php");
 
-//Überprüfe, dass der User eingeloggt ist
+//ÃœberprÃ¼fe, dass der User eingeloggt ist
 //Der Aufruf von check_user() muss in alle internen Seiten eingebaut sein
 $user = check_user();
 
@@ -16,6 +16,18 @@ if($user['rollen_id']==3) {
 include("templates/header.inc.php");
 ?>
 
+
+<script>
+// Fake - Buchung um Tabelle zu erzeugen
+// addBuchung(\"1:".$user['id'].":".$row['auf_id']."\")
+    window.onload = function () {
+        console.log('Dokument geladen');
+		addBuchung('0:0:0');        
+    }
+</script>
+
+
+
 <div class="container main-container">
 
 <p>Herzlich Willkommen <b><?php echo htmlentities($user['vorname']); ?></b>!</p>
@@ -23,66 +35,22 @@ include("templates/header.inc.php");
 
 
 <?php
-/* ToDo: hier die tmp tabelle füllen
-passiert altuell in sae. eventuell als funktion realisieren. dsnn wäre auch ein refresh möhlich
+/* ToDo: hier die tmp tabelle fÃ¼llen
+passiert altuell in sae. eventuell als funktion realisieren. dsnn wÃ¤re auch ein refresh mÃ¶hlich
 */
 
+error_log("Die Oracle-Datenbank ist nicht erreichbar!", 0);
 $res = refresh_tmp();
 
-$conn = mysqli_connect($db_host,$db_user,$db_password,$db_name);
-if (!$conn) {
-    die('Could not connect: ' . mysqli_error($con));
-}
 
 
-$sql = "select tmp_user_id, tmp_user_nick, tmp_heute, tmp_woche, tmp_monat, tmp_jahr\n"
-
-    . "FROM tmp_buchung\n"
-	. "WHERE tmp_user_nick<>'deakt'\n"
-	. "AND tmp_team_id=".$user['sae_team_id']
-	. " ORDER BY tmp_heute DESC";
-	
-	
-$result = mysqli_query($conn,$sql);
 ?>
 
 
 <div>
 	<div id="txtHint">
-	
-
-		<?php
-			$tag = date("d");
-			
-			echo "<table class=\"table table-striped\"> 
-				<tr>
-				<th>Name</th>
-				<th>Heute (Std)</th>
-				<th>Woche (Std)</th>
-				<th>Monat (Std)</th>
-				<th>Jahr (Std)</th>
-				</tr>";
-			
-			while($row = mysqli_fetch_array($result)) {
-				echo "<tr>";
-				echo "<td>" . $row['tmp_user_nick'] . "</td>";    
-				echo "<td id=\"tmp_heute\">" . $row['tmp_heute']/4 . "</td>";
-				echo "<td>" . $row['tmp_woche']/4 . "</td>";
-				echo "<td>" . $row['tmp_monat']/4 . "</td>";
-				echo "<td>" . $row['tmp_jahr']/4 . "</td>";
-				echo "</tr>";
-			}
-
-			echo "</table>";
-
-				
-		?>
-		
-
-		
-		
-		
-		</div> 
+	Hier wird die Ãœbersicht geladen ...
+	</div> 
 </div>
 
 
@@ -117,7 +85,7 @@ include("templates/footer.inc.php")
 <script>
 	var el = document.getElementById("tmp_heute");
 			if (el) {
-				el.addEventListener("onchange", myFuntion);
+				el.addEventListener("onchange", myFunction);
 			}
 	// document.getElementById("tmp_heute").addEventListener("onchange", myFunction);
 
