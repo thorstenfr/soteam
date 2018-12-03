@@ -20,6 +20,44 @@ include("templates/header.inc.php");
     }
 </script>
 
+<script>
+function addBuchung(str) {
+	var msg = document.querySelector("#kommentar").value;
+	/* document.getElementById('kommentar').value = ""; */
+	
+	var checkBox = document.getElementById("myCheck");
+	if (checkBox.checked == true){
+        // Neue persönliche Aufgabe erstellen
+		msg = ":1" + msg;
+    } 
+	else {
+		msg = "0:" + msg;
+	}
+		
+    if (str == "") {
+        document.getElementById("txtHint").innerHTML = "";
+        return;
+    } else { 
+        if (window.XMLHttpRequest) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("txtHint").innerHTML = this.responseText;
+				myShowTop3();		
+            }
+        };
+		str = str + ":" + msg;
+        xmlhttp.open("GET","sae.php?q="+str,true);
+        xmlhttp.send();
+    }
+}
+</script>
+
 
 
 <div class="container main-container">
@@ -69,6 +107,8 @@ $res = refresh_tmp();
 	<br>
 	<label for="kommentar">Kommentar:</label>
 	<input type="text" name="kommentar" id="kommentar" placeholder="Kommentar zur Buchung">
+	 <label><input type="checkbox" id="myCheck" value=""> speichern</label>
+	
 </div>
 
 

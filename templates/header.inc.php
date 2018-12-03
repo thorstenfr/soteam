@@ -15,34 +15,7 @@
     <link  rel="stylesheet" href="css/style.css"> 
 	<link rel="stylesheet" href="css/formate.css">
 	
-    <script>
-function addBuchung(str) {
-	var msg = document.querySelector("#kommentar").value;
-	/* document.getElementById('kommentar').value = ""; */
-		
-    if (str == "") {
-        document.getElementById("txtHint").innerHTML = "";
-        return;
-    } else { 
-        if (window.XMLHttpRequest) {
-            // code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
-        } else {
-            // code for IE6, IE5
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("txtHint").innerHTML = this.responseText;
-				myShowTop3();		
-            }
-        };
-		str = str + ":" + msg;
-        xmlhttp.open("GET","sae.php?q="+str,true);
-        xmlhttp.send();
-    }
-}
-</script>
+    
 
 <script>
 function myFunction() {

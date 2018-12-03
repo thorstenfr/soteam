@@ -22,7 +22,7 @@ $user = check_user();
 
 // Beispiel 2
 $data = "foo:*:1023:1000::/home/foo:/bin/sh";
-list($wert, $user_id, $auf_id, $kommentar) = explode(":", $_GET['q']);
+list($wert, $user_id, $auf_id, $neue_aufgabe,$kommentar) = explode(":", $_GET['q']);
 /*
 echo $user_id; // foo
 echo $auf_id; // *
@@ -36,6 +36,16 @@ $tag = date("d");
 $conn = mysqli_connect($db_host,$db_user,$db_password,$db_name);
 if (!$conn) {
     die('Could not connect: ' . mysqli_error($con));
+}
+
+if ($neue_aufgabe=="1") {
+	// Neue Aufgabe soll erstellt werden
+	
+	// Tätigkeits-ID ermitteln
+	$sql = "SELECT `sae_tae_fk` FROM `sae_aufgabe` WHERE `auf_id` = " . $auf_id;
+	
+	$sql = "INSERT INTO `sae_aufgabe` (`auf_id`, `auf_kurz`, `auf_beschreibung`, `auf_daueraufgabe`, `auf_created_at`, `auf_updated_at`, `auf_beendet_am`, `sae_tae_fk`, `sae_team_id`) VALUES (NULL, \'e556\', \'E556 Image\', \'0\', CURRENT_TIMESTAMP, NULL, NULL, \'3\', \'1\')";
+	
 }
 
 
