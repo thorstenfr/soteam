@@ -28,12 +28,29 @@ require_once("inc/config.inc.php");
 
 $alle=$_GET['q'];
 $details=$_GET['c'];
+$vondatum=$_GET['v'];
+$bisdatum=$_GET['b'];
+$kommentare=$_GET['k'];
+
+error_log("vondatum: ".$vondatum);
 
 /* Gesamt-Buchung berechnen */
 	$sql = "SELECT sum(sae_buchung.buc_wert) as summe FROM `sae_buchung` WHERE  sae_buchung.sae_team_id=".$user['sae_team_id']."";
+	
+	/*
+	
+	
+			*/ 
+			
+			
+			
 	if($alle=="false") {
 			$sql = $sql." AND sae_buchung.users_id=".$user['id'];
+			
 	}
+	
+	error_log($sql,0);
+	
 	$sql = $pdo->prepare($sql);		
 	$result = $sql->execute();
 	
@@ -64,12 +81,25 @@ if ($details=="false") {
 else {
 	echo "<tr>";
 			echo "<th>Datum</th><th>Aufgabe</th>";
+			if($kommentare=="true") {
+				echo "<th>Kommentare</th>";
+			}
 		echo "</tr>";		
 	
 	$sql = "SELECT  users.nick as wer, sae_buchung.buc_created_at as wann, sae_buchung.buc_wert as wert, sae_aufgabe.auf_beschreibung as was, sae_buchung.buc_kommentar as kommentar, sae_buchung.users_id\n"
     . "FROM `sae_buchung`, users, sae_aufgabe\n"
     . "where sae_buchung.users_id=users.id\n"
 	. "AND sae_buchung.sae_team_id=".$user['sae_team_id']."";
+	
+	
+	if ($vondatum !== "-1") {
+		$sql = $sql." AND buc_created_at > '".$vondatum."'";
+	}	
+	
+	
+	if ($bisdatum !== "-1") {
+		$sql = $sql." AND buc_created_at < '".$bisdatum."'";
+	}	
 	
 	if($alle=="false") {
 			$sql = $sql." AND sae_buchung.users_id=".$user['id'];
@@ -80,6 +110,8 @@ else {
 
 	
 }
+
+	error_log("SQL: (".$sql.")",0);
 	$sql = $pdo->prepare($sql);
 	$result = $sql->execute();
 
@@ -99,6 +131,9 @@ else {
 		echo "<tr>";					
 			echo "<td>".$row['wann']."</td>";
 			echo "<td>".$row['was']."</td>";		
+			if($kommentare=="true") {
+				echo "<td>".$row['kommentar']."</td>";
+			}
 		echo "</tr>";
 	}
 	}

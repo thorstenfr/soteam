@@ -110,6 +110,44 @@ function showBuchungen(str) {
 	
 	var myCheckBox = document.getElementById("cb_detail");  
 	var myRadioButton = document.getElementById("alle");
+	var myCbKommentare = document.getElementById("cb_kommentare");  
+	
+	var x = document.getElementById("cb_detail").checked;
+		
+	if (x) {
+		// Show Datumfilter
+		$("#myFilter").show();
+		
+	}
+	else {
+		// Dont show Top 3
+		$("#myFilter").hide();
+	}
+	
+	// Datumfelder auslesen
+	
+	 
+	 
+	  var vondatum = new Date($('#vondatum').val());
+	  if (!isNaN(vondatum)) {
+		  day = vondatum.getDate();
+	      month = vondatum.getMonth() + 1;
+	      year = vondatum.getFullYear();
+	      vondatum = [year, month, day].join('-');   
+	  } else {
+		  vondatum = "-1";
+	  }
+	  
+     var bisdatum = new Date($('#bisdatum').val());
+	 if (!isNaN(bisdatum)) {
+		  day = bisdatum.getDate();
+	      month = bisdatum.getMonth() + 1;
+	      year = bisdatum.getFullYear();
+	      bisdatum = [year, month, day].join('-');   
+	  } else {
+		  bisdatum = "-1";
+	  }
+	 
 	
 	// var myQueryId = document.querySelector("#mySelect").value;
 
@@ -130,7 +168,7 @@ function showBuchungen(str) {
                 document.getElementById("txtHint").innerHTML = this.responseText;
             }
         };
-        xmlhttp.open("GET","getbuchungen.php?q="+myRadioButton.checked+"&c="+myCheckBox.checked+"",true);
+        xmlhttp.open("GET","getbuchungen.php?q="+myRadioButton.checked+"&b="+bisdatum+"&k="+myCbKommentare.checked+"&v="+vondatum+"&c="+myCheckBox.checked+"",true);
         xmlhttp.send();
     }
 }
@@ -273,7 +311,21 @@ function showBuchungen(str) {
 				  <label for="cb_detail">. Details anzeigen: </label><input type="checkbox" name="details" value="detail" id="cb_detail" onchange="showBuchungen(1)"> 
 				
 					<br>
-					<div id="txtHint"><b>Buchungen werden hier angezeigt...</b></div>
+					<div id="myFilter"" style="display : none;">
+						<h5>Felder</h5>
+						<label for="cb_kommentare">Kommentare anzeigen: </label><input type="checkbox" name="kommentare" value="kommentare" id="cb_kommentare" onchange="showBuchungen(1)"> 
+						<h5>Datumfilter</h5>
+						<form>
+						  von:
+						  <input onchange="showBuchungen(1)" id="vondatum" type="date" name="vondatum">
+						  bis: 
+						  <input onchange="showBuchungen(1)" id="bisdatum" type="date" name="vondatum">
+						  
+						</form>
+						<br>
+					</div>
+					<div id="txtHint"><b>Buchungen werden hier angezeigt...</b>
+					</div>
 			</div>
 			<div id="divAdmin" style="display : none;">
 				<h2>Administration</h2>
@@ -329,6 +381,10 @@ function showBuchungen(str) {
 		}
 	?>
 </div>
+
+
+
+
 <?php 
 include("templates/footer.inc.php")
 ?>
