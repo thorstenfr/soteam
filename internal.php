@@ -311,17 +311,16 @@ function showBuchungen(str) {
 				  <label for="cb_detail">. Details anzeigen: </label><input type="checkbox" name="details" value="detail" id="cb_detail" onchange="showBuchungen(1)"> 
 				
 					<br>
-					<div id="myFilter"" style="display : none;">
-						<h5>Felder</h5>
-						<label for="cb_kommentare">Kommentare anzeigen: </label><input type="checkbox" name="kommentare" value="kommentare" id="cb_kommentare" onchange="showBuchungen(1)"> 
-						<h5>Datumfilter</h5>
-						<form>
+					<div class="well well-sm" id="myFilter"" style="display : none;">
+						<label for="cb_kommentare">Kommentare anzeigen: </label><input style="margin-left : 1px;" type="checkbox" name="kommentare" value="kommentare" id="cb_kommentare" onchange="showBuchungen(1)"> 
+						<label style="margin-left : 5px;" for="vondatum">Datumfilter</label>
+						
 						  von:
 						  <input onchange="showBuchungen(1)" id="vondatum" type="date" name="vondatum">
 						  bis: 
 						  <input onchange="showBuchungen(1)" id="bisdatum" type="date" name="vondatum">
 						  
-						</form>
+						
 						<br>
 					</div>
 					<div id="txtHint"><b>Buchungen werden hier angezeigt...</b>
