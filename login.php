@@ -29,14 +29,8 @@ if(isset($_POST['email']) && isset($_POST['passwort'])) {
 			setcookie("identifier",$identifier,time()+(3600*24*365)); //Valid for 1 year
 			setcookie("securitytoken",$securitytoken,time()+(3600*24*365)); //Valid for 1 year
 		}
-		if($user['rollen_id']==3) {
-			header("location: admin.php");
+		header("location: soteam.php");
 			
-		} 
-		else {
-			header("location: soteam.php");
-			
-		}
 		
 		exit;
 	} else {
