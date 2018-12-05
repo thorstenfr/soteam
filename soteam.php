@@ -107,7 +107,7 @@ $res = refresh_tmp();
 	<br>
 	<label for="kommentar">Kommentar:</label>
 	<input type="text" name="kommentar" id="kommentar" placeholder="Kommentar zur Buchung">
-	 <label><input type="checkbox" id="myCheck" value=""> speichern</label>
+	<label style="display : none;"><input type="checkbox" id="myCheck" value=""> speichern</label>
 	
 </div>
 
