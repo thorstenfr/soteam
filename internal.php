@@ -305,20 +305,21 @@ function showBuchungen(str) {
 				Anzeigen der Buchungen: 
 				  <label for="alle">alle</label><input  onchange="showBuchungen(1)"  id="alle" type="radio" name="wer" value="alle" checked>  oder nur 
 				  
-				  <label for="mir">meine</label>
+				  <label for="mir">meine.</label>
 				  <input onchange="showBuchungen(1)"  id="mir" type="radio" name="wer" value="ich">
-				
-				  <label for="cb_detail">. Details anzeigen: </label><input type="checkbox" name="details" value="detail" id="cb_detail" onchange="showBuchungen(1)"> 
-				
-					<br>
-					<div class="well well-sm" id="myFilter"" style="display : none;">
-						<label for="cb_kommentare">Kommentare anzeigen: </label><input style="margin-left : 1px;" type="checkbox" name="kommentare" value="kommentare" id="cb_kommentare" onchange="showBuchungen(1)"> 
-						<label style="margin-left : 5px;" for="vondatum">Datumfilter</label>
+					<div class="well well-sm">
+						
+						<label for="vondatum">Datumfilter</label>
 						
 						  von:
 						  <input onchange="showBuchungen(1)" id="vondatum" type="date" name="vondatum">
 						  bis: 
 						  <input onchange="showBuchungen(1)" id="bisdatum" type="date" name="vondatum">
+						  <label style="margin-left : 5px; margin-right : 5px;" for="cb_detail">Details anzeigen: </label><input type="checkbox" name="details" value="detail" id="cb_detail" onchange="showBuchungen(1)"> 
+					</div>
+					<div class="well well-sm" id="myFilter"" style="display : none;">
+						<label for="cb_kommentare">Kommentare anzeigen: </label><input  type="checkbox" name="kommentare" value="kommentare" id="cb_kommentare" onchange="showBuchungen(1)"> 
+						
 						  
 						
 						<br>

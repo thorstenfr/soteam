@@ -42,7 +42,15 @@ error_log("vondatum: ".$vondatum);
 	
 			*/ 
 			
-			
+		
+		if ($vondatum !== "-1") {
+			$sql = $sql." AND buc_created_at > '".$vondatum."'";
+		}	
+	
+	
+		if ($bisdatum !== "-1") {
+			$sql = $sql." AND buc_created_at < '".$bisdatum."'";
+		}			
 			
 	if($alle=="false") {
 			$sql = $sql." AND sae_buchung.users_id=".$user['id'];
@@ -61,7 +69,7 @@ error_log("vondatum: ".$vondatum);
 if ($details=="false") {
 	
 	echo "<tr>";
-			echo "<th>Was</th><th>Prozent</th><th>Wert</th>";
+			echo "<th>Was</th><th>Prozent</th><th>Stunden</th>";
 	echo "</tr>";
 
 	$sql = "SELECT sae_aufgabe.auf_beschreibung as was   , sum(buc_wert) as wert\n"
@@ -71,6 +79,16 @@ if ($details=="false") {
 		. "where sae_aufgabe.auf_id=sae_buchung.sae_aufgabe_auf_id\n"
 		
 		. "AND sae_buchung.sae_team_id=".$user['sae_team_id']."";
+		
+		
+		if ($vondatum !== "-1") {
+			$sql = $sql." AND buc_created_at > '".$vondatum."'";
+		}	
+	
+	
+		if ($bisdatum !== "-1") {
+			$sql = $sql." AND buc_created_at < '".$bisdatum."'";
+		}	
 		
 		if($alle=="false") {
 			$sql = $sql." AND sae_buchung.users_id=".$user['id'];
@@ -123,7 +141,7 @@ else {
 			echo "<tr>";		
 			echo "<td>".$row['was']."</td>";			
 			echo "<td>".$prozent."%</td>";			
-			echo "<td>".$row['wert']."</td>";		
+			echo "<td>".( $row['wert']/4) ."</td>";		
 		echo "</tr>";
 	}
 	else {
