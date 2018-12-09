@@ -15,25 +15,55 @@ include("templates/header.inc.php");
 // Fake - Buchung um Tabelle zu erzeugen
 // addBuchung(\"1:".$user['id'].":".$row['auf_id']."\")
     window.onload = function () {
-        addBuchung('0:0:0');  
+        addBuchung('0:0:0',0,0);  
 		
     }
 </script>
 
+
+
 <script>
-function addBuchung(str) {
-	var msg = document.querySelector("#kommentar").value;
-	/* document.getElementById('kommentar').value = ""; */
+function addBuchung(str,aufid,daueraufgabe) {
+	var kommentar = document.querySelector("#kommentar").value;
+  var pers_erledigt = 0;
+  var pers_erstellen = 0;
 	
-	var checkBox = document.getElementById("myCheck");
+  /**
+   * $wert, $user_id, $auf_id, $per_erledigt, $neue_aufgabe,$kommentar
+   * Protokoll
+   * a:b:c:d:e
+   * a: 1 => persönliche Aufgabe soll erledigt werden
+   * b: 1 => neue persönliche Aufgabe soll erstellt werden
+   **/
+  
+  console.log(str + ":" + aufid + ":" + daueraufgabe);
+  var checkBox = document.getElementById("myCheck");       
+      
+  if (aufid==0) {
+    console.log("keine echte Buchung");    
+    }
+     else if (daueraufgabe==1000) {
+        console.log("echte Buchung");        
+        var id = "cb" + aufid;
+        var cb = document.getElementById(id); 
+        if (cb.checked == true){
+           console.log("Persönliche Aufgabe soll erledigt werden");         
+          pers_erledigt = 1;
+        } 
+        else {
+          pers_erledigt = 0;
+        }
+    }
+      
+  
 	if (checkBox.checked == true){
-        // Neue persönliche Aufgabe erstellen
-		msg = ":1" + msg;
+        console.log("Neue persönliche Aufgabe erstellen");        
+        pers_erstellen = 1;
     } 
 	else {
-		msg = "0:" + msg;
+		pers_erstellen = 0;
 	}
-		
+		 console.log("str: (" + str + ")");
     if (str == "") {
         document.getElementById("txtHint").innerHTML = "";
         return;
@@ -49,10 +79,10 @@ function addBuchung(str) {
             if (this.readyState == 4 && this.status == 200) {
                 document.getElementById("txtHint").innerHTML = this.responseText;
 				myShowTop3();		
+        document.getElementById("myCheck").checked = false;
             }
-        };
-		str = str + ":" + msg;
-        xmlhttp.open("GET","sae.php?q="+str,true);
+        };	
+        xmlhttp.open("GET","sae.php?q="+str+"&k="+kommentar+"&p="+pers_erledigt+"&e="+pers_erstellen,true);
         xmlhttp.send();
     }
 }
@@ -89,25 +119,11 @@ $res = refresh_tmp();
 
 
 
-<div class="list-group">
 
-	<div id="auf_liste">
-		<?php 
-
-			$statement = $pdo->prepare("SELECT  sae_aufgabe.auf_beschreibung, auf_id FROM sae.sae_aufgabe, users, users_has_sae_aufgabe WHERE id=users_id AND auf_id=sae_aufgabe_auf_id AND id=".$user['id']." AND sae_aufgabe.sae_team_id=".$user['sae_team_id']."");
-			$result = $statement->execute();
-			$count = 1;
-
-			while($row = $statement->fetch()) {
-				echo "<button data-toggle=\"tooltip\" title=\"Klicken zur Aufwandserfassung\" type='button' onclick='addBuchung(\"1:".$user['id'].":".$row['auf_id']."\")' class='list-group-item list-group-item-action'>".$row['auf_beschreibung']."</button>";
-
-			}
-		?>
-	</div>
 	<br>
 	<label for="kommentar">Kommentar:</label>
 	<input type="text" name="kommentar" id="kommentar" placeholder="Kommentar zur Buchung">
-	<label style="display : none;"><input type="checkbox" id="myCheck" value=""> speichern</label>
+	<label><input type="checkbox" id="myCheck" value="" ckecked="false"> als Aufgabe</label>
 	
 </div>
 

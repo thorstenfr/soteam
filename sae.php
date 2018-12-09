@@ -22,40 +22,126 @@ $user = check_user();
 
 // Beispiel 2
 $data = "foo:*:1023:1000::/home/foo:/bin/sh";
-list($wert, $user_id, $auf_id, $neue_aufgabe,$kommentar) = explode(":", $_GET['q']);
-/*
-echo $user_id; // foo
-echo $auf_id; // *
-echo $wert;
-echo $kommentar;
-echo "<br>";
-*/
+list($wert, $user_id, $auf_id) = explode(":", $_GET['q']);
 
-$tag = date("d");
+$kommentar =  $_GET['k'];
+$per_erledigt = $_GET['p'];
+$neue_aufgabe = $_GET['e']; 
 
-$conn = mysqli_connect($db_host,$db_user,$db_password,$db_name);
-if (!$conn) {
-    die('Could not connect: ' . mysqli_error($con));
+$wert = intval($wert);
+$auf_id = intval($auf_id);
+$per_erledigt = intval($per_erledigt);
+$neue_aufgabe = intval($neue_aufgabe); 
+
+
+$txt = sprintf("GET: (%s)(%s)(%s)(%s)\n", $_GET['q'],$_GET['k'],$_GET['p'],$_GET['e']);
+error_log($txt, 0);
+
+// Create connection
+$conn = new mysqli($db_host, $db_user, $db_password, $db_name);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-if ($neue_aufgabe=="1") {
+if ($per_erledigt==1) {
+  $txt = sprintf("Setze Aufgabe mit id (%u) auf erledigt \n", $auf_id);
+  error_log($txt, 0);  
+  /* Aufgabe soll erledigt werden */
+  
+  /* Setze wret auf 0, damot kein DS geschrieben wird */
+  $wert=0;
+  
+  /* Setze auf_bbendet_am - Datum */  
+  if ($stmt = $conn->prepare("UPDATE sae_aufgabe SET auf_beendet_am = NOW() WHERE auf_id =?")) {
+
+		/* bind parameters for markers */
+		$stmt->bind_param("i", $auf_id);
+
+		/* execute query */
+		$stmt->execute();
+    
+    /* close statement */
+    $stmt->close();	
+	}
+  else {
+    error_log("Kann Datensatz nicht aktualisiseren.");
+  }
+	
+  
+  
+}
+
+error_log("neue_aufgabe: " . $neue_aufgabe);
+if ($neue_aufgabe==1) {
 	// Neue Aufgabe soll erstellt werden
-	
+	error_log("Neue Aufgabe",0);
 	// Tätigkeits-ID ermitteln
-	$sql = "SELECT `sae_tae_fk` FROM `sae_aufgabe` WHERE `auf_id` = " . $auf_id;
+  /* create a prepared statement */
+	if ($stmt = $conn->prepare("SELECT sae_tae_fk FROM sae_aufgabe WHERE auf_id=?")) {
+
+		/* bind parameters for markers */
+		$stmt->bind_param("i", $auf_id);
+
+		/* execute query */
+		$stmt->execute();
+
+		/* bind result variables */
+		$stmt->bind_result($sae_tae_fk);
+
+		/* fetch value */
+		$stmt->fetch();
+    
+    /* close statement */
+    $stmt->close();
+
+		$txt = sprintf("auf_id: (%s) gehört zu Tätigkeit: (%s)\n", $auf_id, $sae_tae_fk);
+		error_log($txt, 0);
+	}
+		
+	/* bind darf keine Referenze übergeben werden, deswegen Variablen */
+  $auf_daueraufgabe = 1000;
+  $user_teamid =  intval($user['sae_team_id']);
+  $sae_tae_fk = intval($sae_tae_fk);
+  $komm_kurz = substr($kommentar,0,5);
+  $userid = intval($user['id']);
+  
 	
-	$sql = "INSERT INTO `sae_aufgabe` (`auf_id`, `auf_kurz`, `auf_beschreibung`, `auf_daueraufgabe`, `auf_created_at`, `auf_updated_at`, `auf_beendet_am`, `sae_tae_fk`, `sae_team_id`) VALUES (NULL, \'e556\', \'E556 Image\', \'0\', CURRENT_TIMESTAMP, NULL, NULL, \'3\', \'1\')";
-	
-}
+  // prepare and bind
+  $fk =  intval($sae_tae_fk);
+  $stmt = $conn->prepare("INSERT INTO sae_aufgabe(auf_kurz, auf_beschreibung, auf_daueraufgabe, sae_tae_fk, sae_team_id) VALUES (?, ?, ?, ?, ?)");
+  $stmt->bind_param("ssiii", $komm_kurz, $kommentar, $auf_daueraufgabe, $sae_tae_fk, $user_teamid );
+  $stmt->execute();
+  $stmt->close();
+  
+  
+  $last_id = $conn->insert_id;
+  $txt = sprintf("Neue Aufgabe auf_id: (%s) zur Tätigkeit hinzugefügt: (%s)\n", $last_id, $sae_tae_fk);
+	error_log($txt, 0);
+  
+  
+  /* User die neue AUfgabe zuordnen */ 
+  $stmt = $conn->prepare("INSERT INTO `users_has_sae_aufgabe` (`users_id`, `sae_aufgabe_auf_id`) VALUES (?, ?)");
+  $stmt->bind_param("ii", $userid, $last_id );
+  $stmt->execute();
+  $stmt->close();
+  
+  
+  
+  
+
+} /* Ende neue Aufgabe */
 
 
 if ($wert!=0) {
-	// DS soll nicht geschrieben werden, nur anzeige
-	$stmt = $conn->prepare("INSERT INTO sae_buchung (buc_wert, users_id, sae_aufgabe_auf_id, buc_kommentar, sae_team_id)
+	// DS soll geschrieben werden, nur anzeige
+  $stmt = $conn->prepare("INSERT INTO sae_buchung (buc_wert, users_id, sae_aufgabe_auf_id, buc_kommentar, sae_team_id)
 		VALUES (?, ?, ?, ?, ?)");
 
 	$stmt->bind_param("iiisi", $wert, $user_id, $auf_id, $kommentar, $user['sae_team_id']);
 
+  
 	$stmt->execute();
 	$stmt->close();
 }
@@ -63,7 +149,7 @@ if ($wert!=0) {
 // Tmp-Tabelle aktualisieren
 $res=refresh_tmp();
 
-
+	
 $sql = "select tmp_user_id, tmp_user_nick, tmp_heute, tmp_woche, tmp_monat, tmp_jahr, tmp_jahr_top1_bez,tmp_jahr_top1_wert,tmp_jahr_top2_bez,tmp_jahr_top2_wert,tmp_jahr_top3_bez,tmp_jahr_top3_wert,tmp_monat_top1_bez,tmp_monat_top1_wert,tmp_monat_top2_bez,tmp_monat_top2_wert,tmp_monat_top3_bez,tmp_monat_top3_wert,tmp_woche_top1_bez,tmp_woche_top1_wert,tmp_woche_top2_bez,tmp_woche_top2_wert,tmp_woche_top3_bez,tmp_woche_top3_wert,tmp_tag_top1_bez,tmp_tag_top1_wert,tmp_tag_top2_bez,tmp_tag_top2_wert,tmp_tag_top3_bez,tmp_tag_top3_wert\n"
 
     . "FROM tmp_buchung\n"
@@ -138,10 +224,29 @@ $sql = "select tmp_user_id, tmp_user_nick, tmp_heute, tmp_woche, tmp_monat, tmp_
 				echo "</tr>";
 			}
 			echo "</table>";
+      ?>
+      <div class="list-group">
 
+	<div id="auf_liste">
+	 <?php 
+			$statement = $pdo->prepare("SELECT  sae_aufgabe.auf_daueraufgabe, sae_aufgabe.auf_beschreibung, auf_id FROM sae.sae_aufgabe, users, users_has_sae_aufgabe WHERE auf_beendet_am IS NULL AND id=users_id AND auf_id=sae_aufgabe_auf_id AND id=".$user['id']." AND sae_aufgabe.sae_team_id=".$user['sae_team_id']." ORDER BY `auf_daueraufgabe` DESC");
+			$result = $statement->execute();
+			$count = 1;
+			while($row = $statement->fetch()) {
+				echo "<button data-toggle=\"tooltip\" title=\"Klicken zur Aufwandserfassung\" type='button' onclick='addBuchung(\"1:" . $user['id'] . ":" . $row['auf_id'] . "\"," . $row['auf_id'] . "," . $row['auf_daueraufgabe'] . ")' class='list-group-item list-group-item-action'>".$row['auf_beschreibung'];
+        
+        if ($row['auf_daueraufgabe']==1000) 
+        {
+             echo "<input id=\"cb" . $row['auf_id'] . "\" class=\"pull-right\" type=\"checkbox\">";          
+        }
+        
+        echo "</button>";
+			}
+
+?>
+	</div>
+<?php 
 mysqli_close($conn);
-
-
 
 ?>
 </body>
