@@ -342,7 +342,7 @@ function showBuchungen(str) {
 					if (!$conn) {
 					    die('Could not connect: ' . mysqli_error($con));
 					}
-					$sql = "SELECT `auf_id`,`auf_kurz`,`auf_beschreibung`,`auf_daueraufgabe`,`sae_tae_fk` FROM `sae_aufgabe` WHERE `sae_team_id` = " . $user['sae_team_id'];
+					$sql = "SELECT `auf_id`,`auf_kurz`,`auf_beschreibung`,`auf_daueraufgabe`,`sae_tae_fk` FROM `sae_aufgabe` WHERE `sae_team_id` = " . $user['sae_team_id'] . " AND auf_daueraufgabe=1";
 					
 					
 					$result = mysqli_query($conn,$sql);
