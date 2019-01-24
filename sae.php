@@ -18,6 +18,7 @@ $user = check_user();
 <body>
 
 <?php
+date_default_timezone_set("Europe/Berlin");
 
 function validateDate($date, $format = 'Y-m-d')
 {
