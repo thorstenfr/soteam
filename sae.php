@@ -19,6 +19,12 @@ $user = check_user();
 
 <?php
 
+function validateDate($date, $format = 'Y-m-d')
+{
+    $d = DateTime::createFromFormat($format, $date);
+    // The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
+    return $d && $d->format($format) === $date;
+}
 
 // Beispiel 2
 $data = "foo:*:1023:1000::/home/foo:/bin/sh";
@@ -27,6 +33,16 @@ list($wert, $user_id, $auf_id) = explode(":", $_GET['q']);
 $kommentar =  $_GET['k'];
 $per_erledigt = $_GET['p'];
 $neue_aufgabe = $_GET['e']; 
+$buc_datum = $_GET['b'];
+if (validateDate($buc_datum)) {
+	$buc_datum = $buc_datum . " " . date("H:i:s");
+}
+else {
+	$buc_datum = date("Y-m-d") . " " . date("H:i:s");
+}
+
+ 
+
 
 $wert = intval($wert);
 $auf_id = intval($auf_id);
@@ -34,7 +50,7 @@ $per_erledigt = intval($per_erledigt);
 $neue_aufgabe = intval($neue_aufgabe); 
 
 
-$txt = sprintf("GET: (%s)(%s)(%s)(%s)\n", $_GET['q'],$_GET['k'],$_GET['p'],$_GET['e']);
+$txt = sprintf("GET: (%s)(%s)(%s)(%s) (%s)\n", $_GET['q'],$_GET['k'],$_GET['p'],$_GET['e'],$buc_datum);
 error_log($txt, 0);
 
 // Create connection
@@ -136,10 +152,10 @@ if ($neue_aufgabe==1) {
 
 if ($wert!=0) {
 	// DS soll geschrieben werden, nur anzeige
-  $stmt = $conn->prepare("INSERT INTO sae_buchung (buc_wert, users_id, sae_aufgabe_auf_id, buc_kommentar, sae_team_id)
-		VALUES (?, ?, ?, ?, ?)");
+  $stmt = $conn->prepare("INSERT INTO sae_buchung (buc_wert, users_id, sae_aufgabe_auf_id, buc_kommentar, sae_team_id, buc_created_at)
+		VALUES (?, ?, ?, ?, ?, ?)");
 
-	$stmt->bind_param("iiisi", $wert, $user_id, $auf_id, $kommentar, $user['sae_team_id']);
+	$stmt->bind_param("iiisis", $wert, $user_id, $auf_id, $kommentar, $user['sae_team_id'],$buc_datum);
 
   
 	$stmt->execute();

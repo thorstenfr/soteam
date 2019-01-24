@@ -15,7 +15,13 @@ include("templates/header.inc.php");
 // Fake - Buchung um Tabelle zu erzeugen
 // addBuchung(\"1:".$user['id'].":".$row['auf_id']."\")
     window.onload = function () {
-        addBuchung('0:0:0',0,0);  
+        addBuchung('0:0:0',0,0);
+		var d = new Date();
+		
+		var n = d.toISOString().split('T')[0];
+	
+		
+		$('#buc_datum').val(n);
 		
     }
 </script>
@@ -25,8 +31,10 @@ include("templates/header.inc.php");
 <script>
 function addBuchung(str,aufid,daueraufgabe) {
 	var kommentar = document.querySelector("#kommentar").value;
+	var buc_datum = document.querySelector("#buc_datum").value;
   var pers_erledigt = 0;
   var pers_erstellen = 0;
+  console.log("Buchungsdatum : " + buc_datum);
 	
   /**
    * $wert, $user_id, $auf_id, $per_erledigt, $neue_aufgabe,$kommentar
@@ -82,7 +90,7 @@ function addBuchung(str,aufid,daueraufgabe) {
         document.getElementById("myCheck").checked = false;
             }
         };	
-        xmlhttp.open("GET","sae.php?q="+str+"&k="+kommentar+"&p="+pers_erledigt+"&e="+pers_erstellen,true);
+        xmlhttp.open("GET","sae.php?q="+str+"&k="+kommentar+"&p="+pers_erledigt+"&e="+pers_erstellen+"&b="+buc_datum,true);
         xmlhttp.send();
     }
 }
@@ -124,6 +132,9 @@ $res = refresh_tmp();
 	<label for="kommentar">Kommentar:</label>
 	<input type="text" name="kommentar" id="kommentar" placeholder="Kommentar zur Buchung">
 	<label><input type="checkbox" id="myCheck" value="" ckecked="false"> als Aufgabe</label>
+	<br>
+	<label for="buc_datum">Buchungsdatum:</label>	
+	<input id="buc_datum" type="date" name="buc_datum">
 	
 </div>
 
