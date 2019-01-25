@@ -15,6 +15,9 @@
     <link  rel="stylesheet" href="css/style.css"> 
 	<link rel="stylesheet" href="css/formate.css">
 	
+	<!-- Favicon -->
+	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico"/>
+	
     
 
 <script>
