@@ -250,7 +250,7 @@ $sql = "select tmp_user_id, tmp_user_nick, tmp_heute, tmp_woche, tmp_monat, tmp_
 			$result = $statement->execute();
 			$count = 1;
 			while($row = $statement->fetch()) {
-				echo "<button data-toggle=\"tooltip\" title=\"Klicken zur Aufwandserfassung\" type='button' onclick='addBuchung(\"1:" . $user['id'] . ":" . $row['auf_id'] . "\"," . $row['auf_id'] . "," . $row['auf_daueraufgabe'] . ")' class='list-group-item list-group-item-action ";
+				echo "<a href=\"#\" data-toggle=\"tooltip\" title=\"Klicken zur Aufwandserfassung\" type='button' onclick='addBuchung(\"1:" . $user['id'] . ":" . $row['auf_id'] . "\"," . $row['auf_id'] . "," . $row['auf_daueraufgabe'] . ")' class='list-group-item list-group-item-action ";
         
         if ($row['auf_daueraufgabe']==1000) 
         {
@@ -262,7 +262,7 @@ $sql = "select tmp_user_id, tmp_user_nick, tmp_heute, tmp_woche, tmp_monat, tmp_
 		}
 		
         
-        echo "</button>";
+        echo "</a>";
 			}
 
 ?>
