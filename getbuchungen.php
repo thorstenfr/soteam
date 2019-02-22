@@ -94,7 +94,7 @@ if ($details=="false") {
 			$sql = $sql." AND sae_buchung.users_id=".$user['id'];
 		}
 		
-		$sql=$sql." GROUP BY sae_buchung.sae_aufgabe_auf_id ORDER BY wert DESC";	
+		$sql=$sql." GROUP BY sae_aufgabe.auf_beschreibung ORDER BY wert DESC limit 10";	
 }
 else {
 	echo "<tr>";

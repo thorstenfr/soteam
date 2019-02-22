@@ -302,10 +302,10 @@ function showBuchungen(str) {
 			<div id="divAuswertung" style="display : none;">
 				<h2>Auswertung</h2>
 				<h3>Buchungen</h3>
-				Anzeigen der Buchungen: 
-				  <label for="alle">alle</label><input  onchange="showBuchungen(1)"  id="alle" type="radio" name="wer" value="alle" checked>  oder nur 
+				Anzeigen der <b>Top10</b>-Buchungen: 
+				  <label for="alle">alle </label><input  onchange="showBuchungen(1)"  id="alle" type="radio" name="wer" value="alle" checked>  oder nur 
 				  
-				  <label for="mir">meine.</label>
+				  <label for="mir">meine </label>
 				  <input onchange="showBuchungen(1)"  id="mir" type="radio" name="wer" value="ich">
 					<div class="well well-sm">
 						
