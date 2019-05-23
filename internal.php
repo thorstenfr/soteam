@@ -377,10 +377,10 @@ function showBuchungen(str) {
 							}
 							echo "</select>";
 						?>
-						<p id="p_akt_auf_id" style="display : block;">Aktuelle ID: <span id="akt_auf_id"></span></p>
-						<p id="p_akt_auf_id" style="display : block;">sae_tae_fk: <span id="sae_tae_fk"></span></p>
-						<p id="p_akt_auf_id" style="display : block;">auf_daueraufgabe: <span id="auf_daueraufgabe"></span></p>
-						<p style="display : block;" id="p_akt_auf_name">Aktueller Beschreibung: <span id="akt_auf_name"></span></p>
+						<p id="p_akt_auf_id" style="display : none;">Aktuelle ID: <span id="akt_auf_id"></span></p>
+						<p id="p_akt_auf_id" style="display : none;">sae_tae_fk: <span id="sae_tae_fk"></span></p>
+						<p id="p_akt_auf_id" style="display : none;">auf_daueraufgabe: <span id="auf_daueraufgabe"></span></p>
+						<p style="display : none;" id="p_akt_auf_name">Aktueller Beschreibung: <span id="akt_auf_name"></span></p>
 						<label for="neu_auf_name">Neue Beschreibung:</label>
 						<input type="text" name="neu_auf_name" id="neu_auf_name" placeholder="Neue Beschreibung der Tätigkeit">
 						<button id="btnUpdateAufgabe" onclick="updateAufgabe()">Speichern</button>
