@@ -17,7 +17,9 @@ include("templates/header.inc.php");
 <p id="demo"></p>
 -->
 
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 <script>
 function mySelectSaeAufgabeFunction() {
@@ -69,8 +71,15 @@ function updateAufgabe() {
 			var taet = document.getElementById("sae_tae_fk").innerHTML;	
 			var dauer = document.getElementById("auf_daueraufgabe").innerHTML;	
 			
-				
-			var str = aufid+":"+aufbeschreibung+":"+taet+":"+dauer;
+			console.log("aufid: " + aufid + " beschreibugn " +aufbeschreibung);
+				if (aufid == "" || aufid ==" -99") {
+					console.log("here we are");
+					var str = "-99:"+aufbeschreibung+":-99:1";
+				} 
+				else {
+					var str = aufid+":"+aufbeschreibung+":"+taet+":"+dauer;
+			
+				}
 			
 			
 		if (aufbeschreibung == "") {
@@ -330,6 +339,12 @@ function showBuchungen(str) {
 			<div id="divAdmin" style="display : none;">
 				<h2>Administration</h2>
 				
+				<p>Teamtätigkeiten verwalten:
+				<a href="#" data-toggle="popover" title="Teamtigkeiten" data-content="Die Tätigkeiten, die du hier anlegst, gelten für aller Teamer."><span class="glyphicon glyphicon-info-sign"></span></a>
+          
+
+        
+      </p>
 				
 				<?php
 					/* ToDo: hier die tmp tabelle füllen
@@ -353,7 +368,7 @@ function showBuchungen(str) {
 							$tag = date("d");
 							
 							echo "<select id=\"mySelectSaeAufgabe\" onchange=\"mySelectSaeAufgabeFunction()\">";
-							echo "<option>-Tätigkeit auswählen-</option>";
+							echo "<option value='-99'>-Tätigkeit auswählen-</option>";
 							
 							while($row = mysqli_fetch_array($result)) {
 								
@@ -362,10 +377,10 @@ function showBuchungen(str) {
 							}
 							echo "</select>";
 						?>
-						<p id="p_akt_auf_id" style="display : none;">Aktuelle ID: <span id="akt_auf_id"></span></p>
-						<p id="p_akt_auf_id" style="display : none;">sae_tae_fk: <span id="sae_tae_fk"></span></p>
-						<p id="p_akt_auf_id" style="display : none;">auf_daueraufgabe: <span id="auf_daueraufgabe"></span></p>
-						<p style="display : none;" id="p_akt_auf_name">Aktueller Beschreibung: <span id="akt_auf_name"></span></p>
+						<p id="p_akt_auf_id" style="display : block;">Aktuelle ID: <span id="akt_auf_id"></span></p>
+						<p id="p_akt_auf_id" style="display : block;">sae_tae_fk: <span id="sae_tae_fk"></span></p>
+						<p id="p_akt_auf_id" style="display : block;">auf_daueraufgabe: <span id="auf_daueraufgabe"></span></p>
+						<p style="display : block;" id="p_akt_auf_name">Aktueller Beschreibung: <span id="akt_auf_name"></span></p>
 						<label for="neu_auf_name">Neue Beschreibung:</label>
 						<input type="text" name="neu_auf_name" id="neu_auf_name" placeholder="Neue Beschreibung der Tätigkeit">
 						<button id="btnUpdateAufgabe" onclick="updateAufgabe()">Speichern</button>
@@ -382,7 +397,11 @@ function showBuchungen(str) {
 	?>
 </div>
 
-
+<script>
+	$(document).ready(function(){
+			$('[data-toggle="popover"]').popover();   
+	});
+</script>
 
 
 <?php 

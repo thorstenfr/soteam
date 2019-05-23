@@ -29,20 +29,44 @@ $user = check_user();
 	if (!$conn) {
 	    die('Could not connect: ' . mysqli_error($con));
 	}
+
+	error_log("aufid: " . $aufid, 0);
+	if ($aufid=='-99') {
+		$kurz = substr($beschreibung, 0, 5);  
+		$sql = "INSERT INTO `sae_aufgabe` (`auf_id`, `auf_kurz`, `auf_beschreibung`, `auf_daueraufgabe`,  `sae_tae_fk`, `sae_team_id`) VALUES (NULL, '" . $kurz . "', '" . $beschreibung . "', 1,  1, 99)";
 	
-	$sql = "UPDATE `sae_aufgabe` SET `auf_beschreibung` = '" . $beschreibung . "' WHERE `sae_aufgabe`.`auf_id` = " . $aufid . " AND sae_team_id=" . $user['sae_team_id'];
+	}
+	else 
+	{
+		$sql = "UPDATE `sae_aufgabe` SET `auf_beschreibung` = '" . $beschreibung . "' WHERE `sae_aufgabe`.`auf_id` = " . $aufid . " AND sae_team_id=" . $user['sae_team_id'];
 	
+	}
 	
+	error_log("sql: " . $sql, 0);
 	
 	if ($conn->query($sql) === TRUE) {
-	    echo "Record updated successfully";
+		echo "Record updated successfully";
+		error_log("ok!",0);
 		
 		
 	} else {
-	    echo "Error updating record: " . $conn->error;
+		echo "Error updating record: " . $conn->error;
+		error_log("Fehler: " . $conn->error,0);
 	}
-	
-	if ($auf_daueraufgabe == 1) 
+	if ($aufid=='-99') {
+		// Neuer Daueraufgabe wird jedem Teamer zugeordnet
+		$id=$conn->insert_id;
+		$sql = "INSERT INTO users_has_sae_aufgabe (sae_aufgabe_auf_id, users_id)
+			SELECT ".$id.", id
+			FROM   users
+			WHERE sae_team_id=" . $user['sae_team_id'];
+			if ($conn->query($sql) === TRUE) {
+				error_log("Record updated successfully");
+			} else {
+				error_log("Error updating record: " . $conn->error);
+			}
+	}
+	if ($auf_daueraufgabe == 1000) 
 	{
 		// Bei Dueraufgaben auch die entsprechende Tätigkeit neu schreiben
 		$sql = "UPDATE `sae_taetigkeit` SET `tae_bezeichnung` = '" . $beschreibung . "' WHERE `sae_taetigkeit`.`tae_id` = " . $taetid . " AND sae_team_id=" . $user['sae_team_id'];
