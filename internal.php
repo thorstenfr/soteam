@@ -395,6 +395,106 @@ function showBuchungen(str) {
 	<?php
 		}
 	?>
+	<div class="container">
+  <h3>Tätigkeiten</h3>
+
+  <form>
+    <div class="form-group">
+      <label for="sel1">Teamer (einen auswählen):</label>
+      <select class="form-control" id="sel1">
+		
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+      </select>
+      <br>
+      
+			<div class="row">
+    <div class="col-sm-5">
+			<label for="mySelectSaeAufgabe">Dem Teamer zugerodnete Tätigkeiten:</label>
+			<?php
+					/* ToDo: hier die tmp tabelle füllen
+					passiert altuell in sae. eventuell als funktion realisieren. dsnn wäre auch ein refresh möhlich
+					*/
+					
+					$res = refresh_tmp();
+					
+					$conn = mysqli_connect($db_host,$db_user,$db_password,$db_name);
+					if (!$conn) {
+					    die('Could not connect: ' . mysqli_error($con));
+					}
+					$sql = "SELECT `auf_id`,`auf_kurz`,`auf_beschreibung`,`auf_daueraufgabe`,`sae_tae_fk` FROM `sae_aufgabe`, users_has_sae_aufgabe 
+					WHERE `sae_team_id` = " . $user['sae_team_id'] . " AND auf_daueraufgabe=1 AND users_has_sae_aufgabe.users_id=" . $user['id']
+					. " AND users_has_sae_aufgabe.sae_aufgabe_auf_id=sae_aufgabe.auf_id";
+					
+					
+					$result = mysqli_query($conn,$sql);
+		
+							$tag = date("d");
+							
+							echo "<select multiple class=\"form-control\"  id=\"mySelectSaeAufgabe\" onchange=\"mySelectSaeAufgabeFunction()\">";
+						
+							while($row = mysqli_fetch_array($result)) {
+								
+									echo "<option value='" . $row['auf_id'] . ";" . $row['auf_beschreibung'] . ";" . $row['sae_tae_fk'] . ";" . $row['auf_daueraufgabe'] . "" . "''>" . $row['auf_beschreibung'] . "</option>";
+								
+							}
+							echo "</select>";
+			?>
+					
+		
+		</div>
+		<div class="col-sm-2" >
+				<div style="text-align : center;">	
+				<br><br>
+					<a href="#">
+						<span class="glyphicon glyphicon-arrow-right"></span>
+					</a>
+					<br>
+					<a href="#">
+						<span class="glyphicon glyphicon-arrow-left"></span>
+					</a>
+				</div>
+		</div>
+    <div class="col-sm-5">
+			<label for="mySelectSaeAufgabe">Alle Tätigkeiten:</label>
+			<?php
+					/* ToDo: hier die tmp tabelle füllen
+					passiert altuell in sae. eventuell als funktion realisieren. dsnn wäre auch ein refresh möhlich
+					*/
+					
+					$res = refresh_tmp();
+					
+					$conn = mysqli_connect($db_host,$db_user,$db_password,$db_name);
+					if (!$conn) {
+					    die('Could not connect: ' . mysqli_error($con));
+					}
+					$sql = "SELECT `auf_id`,`auf_kurz`,`auf_beschreibung`,`auf_daueraufgabe`,`sae_tae_fk` FROM `sae_aufgabe` WHERE `sae_team_id` = " . $user['sae_team_id'] . " AND auf_daueraufgabe=1";
+					
+					
+					$result = mysqli_query($conn,$sql);
+		
+							$tag = date("d");
+							
+							echo "<select multiple class=\"form-control\"  id=\"mySelectSaeAufgabeUser\" onchange=\"mySelectSaeAufgabeFunction()\">";
+						
+							while($row = mysqli_fetch_array($result)) {
+								
+									echo "<option value='" . $row['auf_id'] . ";" . $row['auf_beschreibung'] . ";" . $row['sae_tae_fk'] . ";" . $row['auf_daueraufgabe'] . "" . "''>" . $row['auf_beschreibung'] . "</option>";
+								
+							}
+							echo "</select>";
+			?>      
+		</div>
+
+  </div>
+    
+    </div>
+  </form>
+</div>
+
+
 </div>
 
 <script>
